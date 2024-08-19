@@ -1,25 +1,20 @@
+// viewmodel/ComplaintViewModel.kt
 package com.example.collegefixit.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.collegefixit.model.Complaint
 import com.example.collegefixit.repository.ComplaintRepository
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 
-//The ViewModel will communicate with the repository and provide data to the UI.
-class ComplaintViewModel:ViewModel() {
-    //this is used to communicate with the FireStore database
-    //the use of instance is
-    private val db = FirebaseFirestore.getInstance()
-    private val repository = ComplaintRepository(db)
+class ComplaintViewModel : ViewModel() {
+    private val db = FirebaseFirestore.getInstance() // Get Firestore instance
+    private val repository = ComplaintRepository(db) // Create repository instance
 
-    private val _complaints = MutableLiveData<List<Complaint>>() //List of complaints
-    val complaints : LiveData<List<Complaint>> get() = _complaints
+    private val _complaints = MutableLiveData<List<Complaint>>()
+    val complaints: LiveData<List<Complaint>> get() = _complaints
 
-    init{
+    init {
         loadPendingComplaints() // Load pending complaints on ViewModel initialization
     }
 
@@ -28,14 +23,15 @@ class ComplaintViewModel:ViewModel() {
         _complaints.value = repository.getPendingComplaints()
     }
 
+    // Function to add a new complaint
     fun addComplaint(complaint: Complaint) = viewModelScope.launch {
         repository.addComplaint(complaint)
         loadPendingComplaints() // Reload complaints after adding a new one
     }
 
-    fun updateComplaint(complaintId : String, newStatus : String) = viewModelScope.launch {
+    // Function to update the status of a complaint
+    fun updateComplaint(complaintId: String, newStatus: String) = viewModelScope.launch {
         repository.updateComplaint(complaintId, newStatus)
         loadPendingComplaints() // Reload complaints after updating
     }
-
 }

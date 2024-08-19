@@ -1,20 +1,41 @@
+// MainActivity.kt
 package com.example.collegefixit
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.collegefixit.databinding.ActivityMainBinding
+import com.example.collegefixit.model.Complaint
+import com.example.collegefixit.viewmodel.ComplaintViewModel
 
 class MainActivity : AppCompatActivity() {
+
+    private val viewModel: ComplaintViewModel by viewModels()
+    private lateinit var binding : ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        // Set up RecyclerView
+        binding.complaintsRecyclerView.layoutManager = LinearLayoutManager(this)
+        val adapter = ComplaintsAdapter()
+        binding.complaintsRecyclerView.adapter = adapter
+
+        // Observe the LiveData from ViewModel and update UI
+        viewModel.complaints.observe(this, Observer { complaints ->
+            adapter.submitList(complaints)
+        })
+
+        // Handle submit button click to add a new complaint
+        binding.submitButton.setOnClickListener {
+            val title = binding.titleEditText.text.toString()
+            val description = binding.descriptionEditText.text.toString()
+            val complaint = Complaint(title = title, description = description)
+            viewModel.addComplaint(complaint)
         }
     }
 }
