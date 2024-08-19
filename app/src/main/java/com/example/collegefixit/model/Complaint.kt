@@ -1,10 +1,9 @@
-// model/Complaint.kt
 package com.example.collegefixit.model
 
 data class Complaint(
-    val id: String = "", // Unique ID for each complaint
+    val id: String = "", // Firebase auto-generated ID
     val title: String = "",
     val description: String = "",
-    val status: String = "Pending", // Default status is "Pending"
-    val upvotes: Int = 0 // Number of upvotes
+    val status: String = "Pending", // Default status is pending
+    var upvotes: Int = 0 // Default upvotes is 0
 )

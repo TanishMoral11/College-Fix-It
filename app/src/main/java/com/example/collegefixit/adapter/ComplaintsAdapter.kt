@@ -1,4 +1,3 @@
-// ComplaintsAdapter.kt
 package com.example.collegefixit
 
 import android.view.LayoutInflater
@@ -8,8 +7,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.collegefixit.databinding.ItemComplaintBinding
 import com.example.collegefixit.model.Complaint
+import com.example.collegefixit.viewmodel.ComplaintViewModel
 
-class ComplaintsAdapter : ListAdapter<Complaint, ComplaintsAdapter.ComplaintViewHolder>(ComplaintDiffCallback()) {
+class ComplaintsAdapter(private val viewModel: ComplaintViewModel) :
+    ListAdapter<Complaint, ComplaintsAdapter.ComplaintViewHolder>(ComplaintDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComplaintViewHolder {
         val binding = ItemComplaintBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -21,12 +22,17 @@ class ComplaintsAdapter : ListAdapter<Complaint, ComplaintsAdapter.ComplaintView
         holder.bind(complaint)
     }
 
-    class ComplaintViewHolder(private val binding: ItemComplaintBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ComplaintViewHolder(private val binding: ItemComplaintBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(complaint: Complaint) {
             binding.titleTextView.text = complaint.title
             binding.descriptionTextView.text = complaint.description
             binding.statusTextView.text = complaint.status
-            binding.upvotesTextView.text = "Upvotes: ${complaint.upvotes}"
+            binding.upvoteCountTextView.text = "${complaint.upvotes} Upvotes"
+
+            binding.upvoteButton.setOnClickListener {
+                viewModel.upvoteComplaint(complaint.id)
+            }
         }
     }
 

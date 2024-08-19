@@ -1,4 +1,3 @@
-// MainActivity.kt
 package com.example.collegefixit
 
 import android.os.Bundle
@@ -13,7 +12,7 @@ import com.example.collegefixit.viewmodel.ComplaintViewModel
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: ComplaintViewModel by viewModels()
-    private lateinit var binding : ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,10 +21,10 @@ class MainActivity : AppCompatActivity() {
 
         // Set up RecyclerView
         binding.complaintsRecyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = ComplaintsAdapter()
+        val adapter = ComplaintsAdapter(viewModel)
         binding.complaintsRecyclerView.adapter = adapter
 
-        // Observe the LiveData from ViewModel and update UI
+        // Observe the LiveData from ViewModel and update UI in real-time
         viewModel.complaints.observe(this, Observer { complaints ->
             adapter.submitList(complaints)
         })

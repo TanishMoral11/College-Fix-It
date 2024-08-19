@@ -1,4 +1,3 @@
-// viewmodel/ComplaintViewModel.kt
 package com.example.collegefixit.viewmodel
 
 import androidx.lifecycle.*
@@ -15,23 +14,28 @@ class ComplaintViewModel : ViewModel() {
     val complaints: LiveData<List<Complaint>> get() = _complaints
 
     init {
-        loadPendingComplaints() // Load pending complaints on ViewModel initialization
+        observePendingComplaints() // Observe real-time updates
     }
 
-    // Function to load pending complaints
-    private fun loadPendingComplaints() = viewModelScope.launch {
-        _complaints.value = repository.getPendingComplaints()
+    // Function to observe pending complaints in real-time
+    private fun observePendingComplaints() {
+        repository.getPendingComplaintsRealtime { complaints ->
+            _complaints.value = complaints
+        }
     }
 
     // Function to add a new complaint
     fun addComplaint(complaint: Complaint) = viewModelScope.launch {
         repository.addComplaint(complaint)
-        loadPendingComplaints() // Reload complaints after adding a new one
     }
 
     // Function to update the status of a complaint
     fun updateComplaint(complaintId: String, newStatus: String) = viewModelScope.launch {
         repository.updateComplaint(complaintId, newStatus)
-        loadPendingComplaints() // Reload complaints after updating
+    }
+
+    // Function to upvote a complaint
+    fun upvoteComplaint(complaintId: String) = viewModelScope.launch {
+        repository.upvoteComplaint(complaintId)
     }
 }
