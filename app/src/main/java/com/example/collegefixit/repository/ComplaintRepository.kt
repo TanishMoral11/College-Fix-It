@@ -32,17 +32,30 @@ class ComplaintRepository(private val db: FirebaseFirestore) {
         complaintRef.update("status", newStatus).await()
     }
 
-    // Function to increment the upvotes of a complaint
-    suspend fun upvoteComplaint(complaintId: String) {
+
+    // Function to increment or decrement the upvotes of a complaint
+    // In ComplaintRepository.kt
+    suspend fun upvoteComplaint(complaintId: String, userId: String) {
         try {
             val complaintRef = db.collection("complaints").document(complaintId)
             db.runTransaction { transaction ->
                 val snapshot = transaction.get(complaintRef)
-                val newUpvotes = snapshot.getLong("upvotes")?.plus(1) ?: 1
-                transaction.update(complaintRef, "upvotes", newUpvotes)
+                val currentUpvotes = snapshot.get("upvotes") as? List<String> ?: emptyList()
+
+                // Check if the user has already upvoted
+                val updatedUpvotes = if (currentUpvotes.contains(userId)) {
+                    // User has already upvoted, remove the upvote
+                    currentUpvotes.filter { it != userId }
+                } else {
+                    // User has not upvoted, add the upvote
+                    currentUpvotes + userId
+                }
+
+                transaction.update(complaintRef, "upvotes", updatedUpvotes)
             }.await()
         } catch (e: Exception) {
             // Handle exception
         }
     }
+
 }

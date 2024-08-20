@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.example.collegefixit.model.Complaint
 import com.example.collegefixit.repository.ComplaintRepository
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import kotlinx.coroutines.launch
 
 class ComplaintViewModel : ViewModel() {
@@ -13,14 +14,11 @@ class ComplaintViewModel : ViewModel() {
     private val _complaints = MutableLiveData<List<Complaint>>()
     val complaints: LiveData<List<Complaint>> get() = _complaints
 
-    init {
-        observePendingComplaints() // Observe real-time updates
-    }
+    private var listenerRegistration: ListenerRegistration? = null
 
-    // Function to observe pending complaints in real-time
-    private fun observePendingComplaints() {
-        repository.getPendingComplaintsRealtime { complaints ->
-            _complaints.value = complaints
+    init {
+        listenerRegistration = repository.getPendingComplaintsRealtime { updatedComplaints  ->
+            _complaints.value = updatedComplaints
         }
     }
 
@@ -30,12 +28,17 @@ class ComplaintViewModel : ViewModel() {
     }
 
     // Function to update the status of a complaint
-    fun updateComplaint(complaintId: String, newStatus: String) = viewModelScope.launch {
-        repository.updateComplaint(complaintId, newStatus)
+    fun updateComplaintStatus(complaintId: String, newStatus: String) = viewModelScope.launch {
+        repository.updateComplaint(complaintId, newStatus) // Call the correct function
     }
 
     // Function to upvote a complaint
-    fun upvoteComplaint(complaintId: String) = viewModelScope.launch {
-        repository.upvoteComplaint(complaintId)
+    fun upvoteComplaint(complaintId: String, userId: String) = viewModelScope.launch {
+        repository.upvoteComplaint(complaintId, userId)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        listenerRegistration?.remove()
     }
 }

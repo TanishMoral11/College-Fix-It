@@ -1,48 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="8dp">
-
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <!-- Data binding variable for the complaint object -->
+        <variable
+            name="complaint"
+            type="com.example.collegefixit.model.Complaint" />
+    </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Title"
-        android:textStyle="bold" />
+        android:padding="16dp">
 
-    <TextView
-        android:id="@+id/descriptionTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Description" />
+        <!-- Title TextView for displaying complaint title -->
+        <TextView
+            android:id="@+id/complaintTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{complaint.title}"
+            android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/statusTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Status" />
+        <!-- Description TextView for displaying complaint description -->
+        <TextView
+            android:id="@+id/complaintDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{complaint.description}"
+            android:layout_below="@id/complaintTitle" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
-
+        <!-- Button for upvoting the complaint -->
         <Button
             android:id="@+id/upvoteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Upvote" />
+            android:text="Upvote"
+            android:layout_below="@id/complaintDescription"/>
 
+        <!-- TextView for displaying the count of upvotes -->
         <TextView
-            android:id="@+id/upvoteCountTextView"
+            android:id="@+id/upvoteCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="0 Upvotes" />
-    </LinearLayout>
-
-</LinearLayout>
+            android:text="@{String.valueOf(complaint.upvotes.size)}"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+</layout>
