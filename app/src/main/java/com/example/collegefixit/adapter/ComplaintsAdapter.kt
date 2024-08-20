@@ -9,7 +9,7 @@ import com.example.collegefixit.databinding.ItemComplaintBinding
 import com.example.collegefixit.model.Complaint
 import com.example.collegefixit.viewmodel.ComplaintViewModel
 
-class ComplaintsAdapter(private val viewModel: ComplaintViewModel, private val userId: String) : ListAdapter<Complaint, ComplaintsAdapter.ComplaintViewHolder>(ComplaintDiffCallback()) {
+class ComplaintsAdapter(private val viewModel: ComplaintViewModel) : ListAdapter<Complaint, ComplaintsAdapter.ComplaintViewHolder>(ComplaintDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComplaintViewHolder {
         val binding = ItemComplaintBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -24,8 +24,13 @@ class ComplaintsAdapter(private val viewModel: ComplaintViewModel, private val u
     inner class ComplaintViewHolder(private val binding: ItemComplaintBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(complaint: Complaint) {
             binding.complaint = complaint
+
+            // Set the current upvote count
+            binding.upvoteCount.text = complaint.upvotes.toString()
+
+            // Handle upvote button click
             binding.upvoteButton.setOnClickListener {
-                viewModel.upvoteComplaint(complaint.id, userId)
+                viewModel.upvoteComplaint(complaint.id)  // Trigger the ViewModel to update the backend
             }
         }
     }

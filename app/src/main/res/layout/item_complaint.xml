@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
-        <!-- Data binding variable for the complaint object -->
         <variable
             name="complaint"
             type="com.example.collegefixit.model.Complaint" />
@@ -11,7 +10,6 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <!-- Title TextView for displaying complaint title -->
         <TextView
             android:id="@+id/complaintTitle"
             android:layout_width="wrap_content"
@@ -19,7 +17,6 @@
             android:text="@{complaint.title}"
             android:textSize="18sp" />
 
-        <!-- Description TextView for displaying complaint description -->
         <TextView
             android:id="@+id/complaintDescription"
             android:layout_width="wrap_content"
@@ -27,21 +24,21 @@
             android:text="@{complaint.description}"
             android:layout_below="@id/complaintTitle" />
 
-        <!-- Button for upvoting the complaint -->
         <Button
             android:id="@+id/upvoteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Upvote"
-            android:layout_below="@id/complaintDescription"/>
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true" />
 
-        <!-- TextView for displaying the count of upvotes -->
         <TextView
             android:id="@+id/upvoteCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{String.valueOf(complaint.upvotes.size)}"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"/>
+            android:text="@{String.valueOf(complaint.upvotes)}"
+            android:layout_toStartOf="@id/upvoteButton"
+            android:layout_alignBottom="@id/upvoteButton" />
+
     </RelativeLayout>
 </layout>

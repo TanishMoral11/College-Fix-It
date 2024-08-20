@@ -5,5 +5,5 @@ data class Complaint(
     val title: String = "",
     val description: String = "",
     val status: String = "Pending", // Default status is pending
-    var upvotes: List<String> = emptyList() // List of user IDs who have upvoted
+    var upvotes: Int = 0 // Number of upvotes
 )

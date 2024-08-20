@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: ComplaintViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
 
-    private val userId  = "defaultUser"
+    private val userId = "defaultUser"  // Replace with actual user ID in a real application
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         // Set up RecyclerView
         binding.complaintsRecyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = ComplaintsAdapter(viewModel, userId)
+        val adapter = ComplaintsAdapter(viewModel)
         binding.complaintsRecyclerView.adapter = adapter
 
         // Observe the LiveData from ViewModel and update UI in real-time
