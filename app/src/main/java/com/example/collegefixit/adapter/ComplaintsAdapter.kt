@@ -7,9 +7,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.collegefixit.databinding.ItemComplaintBinding
 import com.example.collegefixit.model.Complaint
-import com.example.collegefixit.viewmodel.ComplaintViewModel
 
-class ComplaintsAdapter(private val viewModel: ComplaintViewModel) : ListAdapter<Complaint, ComplaintsAdapter.ComplaintViewHolder>(ComplaintDiffCallback()) {
+class ComplaintsAdapter(
+    private val onUpvoteClick: (String) -> Unit
+) : ListAdapter<Complaint, ComplaintsAdapter.ComplaintViewHolder>(ComplaintDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComplaintViewHolder {
         val binding = ItemComplaintBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -30,7 +31,7 @@ class ComplaintsAdapter(private val viewModel: ComplaintViewModel) : ListAdapter
 
             // Handle upvote button click
             binding.upvoteButton.setOnClickListener {
-                viewModel.upvoteComplaint(complaint.id)  // Trigger the ViewModel to update the backend
+                onUpvoteClick(complaint.id)  // Trigger the callback to handle upvote
             }
         }
     }

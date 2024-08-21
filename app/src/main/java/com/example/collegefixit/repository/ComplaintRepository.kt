@@ -8,11 +8,8 @@ import kotlinx.coroutines.tasks.await
 class ComplaintRepository {
 
     private val db = FirebaseFirestore.getInstance()
-    private val firestore = FirebaseFirestore.getInstance()
-
     private val complaintsCollection = db.collection("complaints")
 
-    // Function to get complaints in real-time
     fun getPendingComplaintsRealtime(onUpdate: (List<Complaint>) -> Unit): ListenerRegistration {
         return complaintsCollection
             .whereEqualTo("status", "Pending")
@@ -21,28 +18,31 @@ class ComplaintRepository {
                     // Handle error
                     return@addSnapshotListener
                 }
-                val complaints = snapshot?.documents?.mapNotNull { it.toObject(Complaint::class.java) } ?: emptyList()
+                val complaints = snapshot?.documents?.mapNotNull {
+                    it.toObject(Complaint::class.java)?.copy(id = it.id)
+                } ?: emptyList()
                 onUpdate(complaints)
             }
     }
 
-    // Function to upvote a complaint
     suspend fun upvoteComplaint(complaintId: String) {
         try {
-            val complaintRef = firestore.collection("complaints").document(complaintId)
-            firestore.runTransaction { transaction ->
+            val complaintRef = complaintsCollection.document(complaintId)
+            db.runTransaction { transaction ->
                 val complaintSnapshot = transaction.get(complaintRef)
-                val currentUpvoteCount = complaintSnapshot.getLong("upvoteCount") ?: 0
-                transaction.update(complaintRef, "upvoteCount", currentUpvoteCount + 1)
+                val currentUpvoteCount = complaintSnapshot.getLong("upvotes") ?: 0
+                transaction.update(complaintRef, "upvotes", currentUpvoteCount + 1)
             }.await()
         } catch (e: Exception) {
-            // Handle the error
-            e.printStackTrace()
+            throw e
         }
     }
 
-    // Function to add a new complaint
     suspend fun addComplaint(complaint: Complaint) {
-        complaintsCollection.add(complaint).await()
+        try {
+            complaintsCollection.add(complaint).await()
+        } catch (e: Exception) {
+            throw e
+        }
     }
 }

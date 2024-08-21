@@ -1,6 +1,7 @@
 package com.example.collegefixit
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -14,8 +15,6 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: ComplaintViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
 
-    private val userId = "defaultUser"  // Replace with actual user ID in a real application
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -23,7 +22,10 @@ class MainActivity : AppCompatActivity() {
 
         // Set up RecyclerView
         binding.complaintsRecyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = ComplaintsAdapter(viewModel)
+        val adapter = ComplaintsAdapter { complaintId ->
+            // Handle upvote click
+            viewModel.upvoteComplaint(complaintId)
+        }
         binding.complaintsRecyclerView.adapter = adapter
 
         // Observe the LiveData from ViewModel and update UI in real-time
@@ -31,12 +33,24 @@ class MainActivity : AppCompatActivity() {
             adapter.submitList(complaints)
         })
 
+
+        viewModel.errorMessage.observe(this, Observer { errorMessage ->
+        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+        })
+
+        // Handle submit button click to add a new complaint
         // Handle submit button click to add a new complaint
         binding.submitButton.setOnClickListener {
             val title = binding.titleEditText.text.toString()
             val description = binding.descriptionEditText.text.toString()
-            val complaint = Complaint(title = title, description = description)
-            viewModel.addComplaint(complaint)
+            if (title.isNotBlank() && description.isNotBlank()) {
+                val complaint = Complaint(title = title, description = description)
+                viewModel.addComplaint(complaint)
+                binding.titleEditText.text.clear()
+                binding.descriptionEditText.text.clear()
+            } else {
+                Toast.makeText(this, "Please fill in both title and description", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

@@ -15,6 +15,9 @@ class ComplaintViewModel : ViewModel() {
     private val _complaints = MutableLiveData<List<Complaint>>()
     val complaints: LiveData<List<Complaint>> get() = _complaints
 
+    private val _errorMessage = MutableLiveData<String>()
+    val errorMessage: LiveData<String> get() = _errorMessage
+
     init {
         repository.getPendingComplaintsRealtime { updatedComplaints ->
             _complaints.value = updatedComplaints
@@ -22,10 +25,18 @@ class ComplaintViewModel : ViewModel() {
     }
 
     fun upvoteComplaint(complaintId: String) = viewModelScope.launch {
-        repository.upvoteComplaint(complaintId)
+        try {
+            repository.upvoteComplaint(complaintId)
+        } catch (e: Exception) {
+            _errorMessage.value = "Failed to upvote: ${e.message}"
+        }
     }
 
     fun addComplaint(complaint: Complaint) = viewModelScope.launch {
-        repository.addComplaint(complaint)
+        try{
+            repository.addComplaint(complaint)
+        } catch (e: Exception) {
+            _errorMessage.value = "Failed to add complaint: ${e.message}"
+        }
     }
 }
