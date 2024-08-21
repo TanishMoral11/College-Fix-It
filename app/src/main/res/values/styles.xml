@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextViewRoundedCorners" parent="ShapeAppearance.MaterialComponents.TopCorner">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">35dp</item>
+    </style>
+    <style name="CustomTextInputEditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="android:background">@drawable/texts_round</item>
+    </style>
+</resources>
