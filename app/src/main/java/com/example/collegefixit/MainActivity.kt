@@ -1,23 +1,36 @@
 package com.example.collegefixit
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.collegefixit.Auth.LoginActivity
 import com.example.collegefixit.databinding.ActivityMainBinding
 import com.example.collegefixit.model.Complaint
 import com.example.collegefixit.viewmodel.ComplaintViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var auth : FirebaseAuth
     private val viewModel: ComplaintViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        auth = FirebaseAuth.getInstance()
+        if(auth.currentUser == null){
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
+        else {
+            setContentView(R.layout.activity_main)
+            Toast.makeText(this, "Welcome ${auth.currentUser?.email}", Toast.LENGTH_SHORT).show()
+        }
 
         //for disable the dark mode
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)

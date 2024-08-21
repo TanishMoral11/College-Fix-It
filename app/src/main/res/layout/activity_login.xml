@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@android:color/white"
+    tools:context=".Auth.LoginActivity">
+
+<!--    <com.airbnb.lottie.LottieAnimationView-->
+<!--        android:id="@+id/lottie_login"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="200dp"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        app:lottie_rawRes="@raw/login_animation"-->
+<!--        app:lottie_autoPlay="true"-->
+<!--        app:lottie_loop="true" />-->
+
+    <EditText
+        android:id="@+id/et_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:padding="16dp"
+        android:background="@drawable/edit_text_background"/>
+<!--    android:layout_below="@id/lottie_login"-->
+
+
+    <EditText
+        android:id="@+id/et_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_email"
+        android:layout_marginTop="16dp"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:padding="16dp"
+        android:background="@drawable/edit_text_background"/>
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_password"
+        android:layout_marginTop="24dp"
+        android:text="Login"/>
+
+    <TextView
+    android:id="@+id/CreateAccount"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/btn_login"
+    android:layout_alignParentStart="true"
+    android:layout_marginStart="114dp"
+    android:layout_marginTop="14dp"
+    android:text="Create An Account"
+    android:textColor="@android:color/holo_blue_dark"
+    android:textSize="16sp" />
+</RelativeLayout>

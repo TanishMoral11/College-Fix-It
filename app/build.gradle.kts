@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.firebase.database)
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.auth)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -67,4 +68,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     implementation("com.google.android.material:material:1.4.0")
+
+    implementation ("com.airbnb.android:lottie:5.0.3")
+
 }
