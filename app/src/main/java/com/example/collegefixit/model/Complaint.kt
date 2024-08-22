@@ -1,9 +1,10 @@
 package com.example.collegefixit.model
 
 data class Complaint(
-    val id: String = "", // Firebase auto-generated ID
+    val id: String = "",
     val title: String = "",
     val description: String = "",
-    val status: String = "Pending", // Default status is pending
-    var upvotes: Int = 0 // Number of upvotes
+    val status: String = "Pending",
+    var upvotes: Int = 0,
+    var upvotedBy: MutableList<String> = mutableListOf() // New field
 )

@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         binding.complaintsRecyclerView.layoutManager = LinearLayoutManager(this)
         val adapter = ComplaintsAdapter { complaintId ->
             // Handle upvote click
-            viewModel.upvoteComplaint(complaintId)
+            viewModel.toggleUpvote(complaintId)
         }
         binding.complaintsRecyclerView.adapter = adapter
 

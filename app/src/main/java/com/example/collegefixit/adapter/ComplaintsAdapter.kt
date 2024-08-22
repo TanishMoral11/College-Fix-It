@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.collegefixit.databinding.ItemComplaintBinding
 import com.example.collegefixit.model.Complaint
+import com.google.firebase.auth.FirebaseAuth
 
 class ComplaintsAdapter(
     private val onUpvoteClick: (String) -> Unit
@@ -28,6 +29,13 @@ class ComplaintsAdapter(
 
             // Set the current upvote count
             binding.upvoteCount.text = complaint.upvotes.toString()
+
+            // Check if the current user has upvoted this complaint
+            val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+            val hasUpvoted = currentUserId in complaint.upvotedBy
+
+            // Update the upvote button appearance based on the user's upvote status
+            binding.upvoteButton.isSelected = hasUpvoted
 
             // Handle upvote button click
             binding.upvoteButton.setOnClickListener {

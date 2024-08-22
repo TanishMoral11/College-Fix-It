@@ -25,13 +25,36 @@ class ComplaintRepository {
             }
     }
 
-    suspend fun upvoteComplaint(complaintId: String) {
+//    suspend fun upvoteComplaint(complaintId: String) {
+//        try {
+//            val complaintRef = complaintsCollection.document(complaintId)
+//            db.runTransaction { transaction ->
+//                val complaintSnapshot = transaction.get(complaintRef)
+//                val currentUpvoteCount = complaintSnapshot.getLong("upvotes") ?: 0
+//                transaction.update(complaintRef, "upvotes", currentUpvoteCount + 1)
+//            }.await()
+//        } catch (e: Exception) {
+//            throw e
+//        }
+//    }
+    suspend fun toggleUpvote(complaintId: String, userId: String) {
         try {
             val complaintRef = complaintsCollection.document(complaintId)
             db.runTransaction { transaction ->
                 val complaintSnapshot = transaction.get(complaintRef)
-                val currentUpvoteCount = complaintSnapshot.getLong("upvotes") ?: 0
-                transaction.update(complaintRef, "upvotes", currentUpvoteCount + 1)
+                val currentUpvotes = complaintSnapshot.getLong("upvotes") ?: 0
+                val upvotedBy = complaintSnapshot.get("upvotedBy") as? MutableList<String> ?: mutableListOf()
+
+                if (userId in upvotedBy) {
+                    // User has already upvoted, so remove their upvote
+                    transaction.update(complaintRef, "upvotes", currentUpvotes - 1)
+                    upvotedBy.remove(userId)
+                } else {
+                    // User hasn't upvoted yet, so add their upvote
+                    transaction.update(complaintRef, "upvotes", currentUpvotes + 1)
+                    upvotedBy.add(userId)
+                }
+                transaction.update(complaintRef, "upvotedBy", upvotedBy)
             }.await()
         } catch (e: Exception) {
             throw e

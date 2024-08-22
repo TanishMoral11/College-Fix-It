@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.collegefixit.model.Complaint
 import com.example.collegefixit.repository.ComplaintRepository
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 class ComplaintViewModel : ViewModel() {
@@ -24,11 +25,16 @@ class ComplaintViewModel : ViewModel() {
         }
     }
 
-    fun upvoteComplaint(complaintId: String) = viewModelScope.launch {
+    fun toggleUpvote(complaintId: String) = viewModelScope.launch {
         try {
-            repository.upvoteComplaint(complaintId)
+            val userId = FirebaseAuth.getInstance().currentUser?.uid
+            if (userId != null) {
+                repository.toggleUpvote(complaintId, userId)
+            } else {
+                _errorMessage.value = "User not logged in"
+            }
         } catch (e: Exception) {
-            _errorMessage.value = "Failed to upvote: ${e.message}"
+            _errorMessage.value = "Failed to toggle upvote: ${e.message}"
         }
     }
 
