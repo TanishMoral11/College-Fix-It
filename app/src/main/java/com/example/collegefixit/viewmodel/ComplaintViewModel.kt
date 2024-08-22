@@ -25,6 +25,21 @@ class ComplaintViewModel : ViewModel() {
         }
     }
 
+
+
+    fun deleteComplaint(complaintId: String) = viewModelScope.launch {
+        try {
+            val userId = FirebaseAuth.getInstance().currentUser?.uid
+            if (userId != null && repository.isUserComplaintOwner(complaintId, userId)) {
+                repository.deleteComplaint(complaintId)
+            } else {
+                _errorMessage.value = "You can only delete your own complaints"
+            }
+        } catch (e: Exception) {
+            _errorMessage.value = "Failed to delete complaint: ${e.message}"
+        }
+    }
+
     fun toggleUpvote(complaintId: String) = viewModelScope.launch {
         try {
             val userId = FirebaseAuth.getInstance().currentUser?.uid

@@ -15,7 +15,7 @@
 
         <TextView
             android:id="@+id/titleTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{complaint.title}"
             app:layout_constraintTop_toTopOf="parent"
@@ -24,7 +24,7 @@
 
         <TextView
             android:id="@+id/descriptionTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{complaint.description}"
             app:layout_constraintTop_toBottomOf="@id/titleTextView"
@@ -37,7 +37,8 @@
             android:layout_height="wrap_content"
             android:text="@{String.valueOf(complaint.upvotes)}"
             app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <Button
             android:id="@+id/upvoteButton"
@@ -45,6 +46,16 @@
             android:layout_height="wrap_content"
             android:text="Upvote"
             app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintStart_toEndOf="@id/upvoteCount"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <Button
+            android:id="@+id/deleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

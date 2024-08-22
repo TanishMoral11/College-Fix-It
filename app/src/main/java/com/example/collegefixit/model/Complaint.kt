@@ -6,5 +6,6 @@ data class Complaint(
     val description: String = "",
     val status: String = "Pending",
     var upvotes: Int = 0,
-    var upvotedBy: MutableList<String> = mutableListOf()
+    var upvotedBy: MutableList<String> = mutableListOf(),
+    val userId: String = "" // ID of the user who created the complaint
 )

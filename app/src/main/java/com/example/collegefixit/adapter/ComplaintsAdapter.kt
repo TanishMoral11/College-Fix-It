@@ -1,6 +1,7 @@
 package com.example.collegefixit
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -9,8 +10,10 @@ import com.example.collegefixit.databinding.ItemComplaintBinding
 import com.example.collegefixit.model.Complaint
 import com.google.firebase.auth.FirebaseAuth
 
+
 class ComplaintsAdapter(
-    private val onUpvoteClick: (String) -> Unit
+    private val onUpvoteClick: (String) -> Unit,
+    private val onDeleteClick: (String) -> Unit // Callback for deleting complaints
 ) : ListAdapter<Complaint, ComplaintsAdapter.ComplaintViewHolder>(ComplaintDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComplaintViewHolder {
@@ -30,16 +33,25 @@ class ComplaintsAdapter(
             // Set the current upvote count
             binding.upvoteCount.text = complaint.upvotes.toString()
 
-            // Check if the current user has upvoted this complaint
             val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
-            val hasUpvoted = currentUserId in complaint.upvotedBy
 
-            // Update the upvote button appearance based on the user's upvote status
+            // Check if the current user has upvoted this complaint
+            val hasUpvoted = currentUserId in complaint.upvotedBy
             binding.upvoteButton.isSelected = hasUpvoted
 
             // Handle upvote button click
             binding.upvoteButton.setOnClickListener {
-                onUpvoteClick(complaint.id)  // Trigger the callback to handle upvote
+                onUpvoteClick(complaint.id)
+            }
+
+            // Show the delete button only if the current user created the complaint
+            if (complaint.userId == currentUserId) {
+                binding.deleteButton.visibility = View.VISIBLE
+                binding.deleteButton.setOnClickListener {
+                    onDeleteClick(complaint.id)
+                }
+            } else {
+                binding.deleteButton.visibility = View.GONE
             }
         }
     }

@@ -10,6 +10,26 @@ class ComplaintRepository {
     private val db = FirebaseFirestore.getInstance()
     private val complaintsCollection = db.collection("complaints")
 
+
+    suspend fun isUserComplaintOwner(complaintId: String, userId: String): Boolean {
+        return try {
+            val complaintDoc = complaintsCollection.document(complaintId).get().await()
+            complaintDoc.getString("userId") == userId
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    suspend fun deleteComplaint(complaintId: String){
+        try{
+            complaintsCollection.document(complaintId).delete().await()
+
+        }
+        catch (e: Exception){
+            throw e
+        }
+    }
+
     fun getPendingComplaintsRealtime(onUpdate: (List<Complaint>) -> Unit): ListenerRegistration {
         return complaintsCollection
             .whereEqualTo("status", "Pending")

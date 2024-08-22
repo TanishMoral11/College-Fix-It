@@ -31,10 +31,14 @@ class ComplaintsListFragment : Fragment() {
 
         // Set up RecyclerView
         binding.complaintsRecyclerView.layoutManager = LinearLayoutManager(context)
-        val adapter = ComplaintsAdapter { complaintId ->
-            // Handle upvote click
-            viewModel.toggleUpvote(complaintId)
-        }
+        val adapter = ComplaintsAdapter(
+            onUpvoteClick = { complaintId ->
+                viewModel.toggleUpvote(complaintId)
+            },
+            onDeleteClick = { complaintId ->
+                viewModel.deleteComplaint(complaintId)
+            }
+        )
         binding.complaintsRecyclerView.adapter = adapter
 
         // Observe the LiveData from ViewModel and update UI in real-time

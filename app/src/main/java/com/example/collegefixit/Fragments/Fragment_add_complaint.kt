@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.collegefixit.databinding.FragmentAddComplaintBinding
 import com.example.collegefixit.viewmodel.ComplaintViewModel
 import com.example.collegefixit.model.Complaint
+import com.google.firebase.auth.FirebaseAuth
 
 class AddComplaintFragment : Fragment() {
 
@@ -33,13 +34,20 @@ class AddComplaintFragment : Fragment() {
             val title = binding.titleEditText.text.toString()
             val description = binding.descriptionEditText.text.toString()
             if (title.isNotBlank() && description.isNotBlank()) {
-                val complaint = Complaint(title = title, description = description)
-                viewModel.addComplaint(complaint)
-                Toast.makeText(context, "Complaint submitted", Toast.LENGTH_SHORT).show()
-                binding.titleEditText.text.clear()
-                binding.descriptionEditText.text.clear()
+                val userId = FirebaseAuth.getInstance().currentUser?.uid
+                if (userId != null) {
+                    val complaint = Complaint(
+                        title = title,
+                        description = description,
+                        userId = userId
+                    )
+                    viewModel.addComplaint(complaint)
+                    // Clear input fields and navigate back
+                } else {
+                    Toast.makeText(context, "User not logged in", Toast.LENGTH_SHORT).show()
+                }
             } else {
-                Toast.makeText(context, "Please fill in both title and description", Toast.LENGTH_SHORT).show()
+                // Handle invalid input
             }
         }
     }
