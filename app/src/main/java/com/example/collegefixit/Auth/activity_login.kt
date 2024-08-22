@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.collegefixit.MainActivity
 import com.example.collegefixit.R
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -24,7 +25,7 @@ class LoginActivity : AppCompatActivity() {
 
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
-
+       animate(findViewById<MaterialCardView>(R.id.cardView))
         // Access the TextInputLayouts and their contained TextInputEditTexts
         val emailInputLayout: TextInputLayout = findViewById(R.id.emailInputLayout)
         val emailEditText: TextInputEditText = emailInputLayout.editText as TextInputEditText
@@ -62,5 +63,10 @@ class LoginActivity : AppCompatActivity() {
         createAccountTextView.setOnClickListener {
             startActivity(Intent(this, SignupActivity::class.java))
         }
+    }
+    private fun animate(card:MaterialCardView)
+    {
+        val animation=android.view.animation.AnimationUtils.loadAnimation(this,R.anim.bottom_to_top)
+        card.startAnimation(animation)
     }
 }

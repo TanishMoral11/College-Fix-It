@@ -9,8 +9,10 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import android.widget.Toast
+import androidx.core.view.ViewCompat.animate
 import com.example.collegefixit.MainActivity
 import com.example.collegefixit.R
+import com.google.android.material.card.MaterialCardView
 
 class SignupActivity : AppCompatActivity() {
 
@@ -22,6 +24,7 @@ class SignupActivity : AppCompatActivity() {
         setContentView(R.layout.activity_signup)
 
         auth = FirebaseAuth.getInstance()
+        animate (findViewById<MaterialCardView>(R.id.cardView))
 
         val emailEditText: EditText = findViewById(R.id.emailEditText)
         val passwordEditText: EditText = findViewById(R.id.passwordEditText)
@@ -57,5 +60,11 @@ class SignupActivity : AppCompatActivity() {
         tv_already_have_account.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
         }
+
+
+    }
+    private fun animate (card: MaterialCardView){
+        val animation = android.view.animation.AnimationUtils.loadAnimation(this, R.anim.bottom_to_top)
+        card.startAnimation(animation)
     }
 }
