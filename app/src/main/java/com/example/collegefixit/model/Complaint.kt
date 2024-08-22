@@ -6,5 +6,5 @@ data class Complaint(
     val description: String = "",
     val status: String = "Pending",
     var upvotes: Int = 0,
-    var upvotedBy: MutableList<String> = mutableListOf() // New field
+    var upvotedBy: MutableList<String> = mutableListOf()
 )

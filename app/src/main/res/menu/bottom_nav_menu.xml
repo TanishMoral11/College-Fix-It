@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_complaints"
+        android:icon="@drawable/baseline_home_24"
+        android:title="Complaints" />
+
+    <item
+        android:id="@+id/nav_add_complaint"
+        android:icon="@drawable/baseline_add_box_24"
+    android:title="Add Complaint" />
+
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/baseline_settings_24"
+    android:title="Profile" />
+
+</menu>
