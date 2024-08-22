@@ -11,18 +11,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.collegefixit.Auth.LoginActivity
 import com.example.collegefixit.databinding.ActivityMainBinding
 import com.example.collegefixit.model.Complaint
+import com.example.collegefixit.utils.Constants.Companion.auth
 import com.example.collegefixit.viewmodel.ComplaintViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var auth : FirebaseAuth
+
     private val viewModel: ComplaintViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        auth = FirebaseAuth.getInstance()
+
         if(auth.currentUser == null){
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
@@ -32,8 +33,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Welcome ${auth.currentUser?.email}", Toast.LENGTH_SHORT).show()
         }
 
-        //for disable the dark mode
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         super.onCreate(savedInstanceState)
 //        enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
