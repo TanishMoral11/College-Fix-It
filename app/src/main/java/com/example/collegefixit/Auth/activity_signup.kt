@@ -23,24 +23,36 @@ class SignupActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        val emailEditText: EditText = findViewById(R.id.et_email)
-        val passwordEditText: EditText = findViewById(R.id.et_password)
-        val signupButton: Button = findViewById(R.id.btn_signup)
-        val tv_already_have_account: TextView = findViewById(R.id.tv_already_have_account)
+        val emailEditText: EditText = findViewById(R.id.emailEditText)
+        val passwordEditText: EditText = findViewById(R.id.passwordEditText)
+        val confirmpasswordEditText: EditText = findViewById(R.id.confirmPasswordEditText)
+        val signupButton: Button = findViewById(R.id.signUpButton)
+        val tv_already_have_account: TextView = findViewById(R.id.tvalreadyHaveAccount)
 
         signupButton.setOnClickListener {
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
+            val confirmPassword = confirmpasswordEditText.text.toString()
 
-            auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        // Navigate to home screen
-                        startActivity(Intent(this, MainActivity::class.java))
-                    } else {
-                        Toast.makeText(this, "Registration failed.", Toast.LENGTH_SHORT).show()
+
+            if(password != confirmPassword){
+                Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+
+            }
+            else {
+                auth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            // Navigate to home screen
+                            startActivity(Intent(this, MainActivity::class.java))
+                        } else {
+                            Toast.makeText(this, "Registration failed.", Toast.LENGTH_SHORT).show()
+                        }
                     }
-                }
+            }
+
+
         }
         tv_already_have_account.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))

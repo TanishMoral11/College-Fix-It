@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg">
@@ -34,7 +35,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/emailEditText"
+                android:id="@+id/emailInputLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -44,23 +45,26 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/emailEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/CustomTextInputEditText"
-                    android:hint="Email" />
+                    android:hint="Email"
+                    android:inputType="textEmailAddress" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/passwordEditText"
+                android:id="@+id/passwordInputLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/emailEditText">
+                app:layout_constraintTop_toBottomOf="@+id/emailInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/passwordEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/CustomTextInputEditText"
@@ -69,16 +73,17 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/confirmPasswordEditText"
+                android:id="@+id/confirmPasswordInputLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/passwordEditText">
+                app:layout_constraintTop_toBottomOf="@+id/passwordInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/confirmPasswordEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/CustomTextInputEditText"
@@ -96,9 +101,22 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/confirmPasswordEditText" />
+                app:layout_constraintTop_toBottomOf="@+id/confirmPasswordInputLayout" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvalreadyHaveAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Already have an account? Sign in"
+                android:textColor="@color/colorAccent"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signUpButton" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

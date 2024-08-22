@@ -4,13 +4,14 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.collegefixit.MainActivity
 import com.example.collegefixit.R
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
 
@@ -21,32 +22,45 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
 
-        val emailEditText: EditText = findViewById(R.id.et_email)
-        val passwordEditText: EditText = findViewById(R.id.et_password)
-        val loginButton: Button = findViewById(R.id.btn_login)
-        val CreateAccount: TextView = findViewById(R.id.CreateAccount)
+        // Access the TextInputLayouts and their contained TextInputEditTexts
+        val emailInputLayout: TextInputLayout = findViewById(R.id.emailInputLayout)
+        val emailEditText: TextInputEditText = emailInputLayout.editText as TextInputEditText
 
+        val passwordInputLayout: TextInputLayout = findViewById(R.id.passwordInputLayout)
+        val passwordEditText: TextInputEditText = passwordInputLayout.editText as TextInputEditText
+
+        val loginButton: Button = findViewById(R.id.loginButton)
+        val createAccountTextView: TextView = findViewById(R.id.dontHaveAccountText)
+
+        // Set up the login button click listener
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
 
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Please fill in all fields.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Sign in with Firebase Authentication
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Navigate to home screen
                         startActivity(Intent(this, MainActivity::class.java))
+                        finish()  // Finish the login activity
                     } else {
-                        Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Authentication failed. Please try again.", Toast.LENGTH_SHORT).show()
                     }
                 }
         }
 
-        CreateAccount.setOnClickListener {
+        // Set up the create account click listener
+        createAccountTextView.setOnClickListener {
             startActivity(Intent(this, SignupActivity::class.java))
         }
-
-
     }
 }
