@@ -15,30 +15,40 @@
         android:theme="@style/Theme.CollegeFixIt"
         tools:targetApi="31">
         <activity
-            android:name=".Auth.SignupActivity"
-            android:exported="false" />
-<!--        <activity-->
-<!--            android:name=".LoginActivity"-->
-<!--            android:exported="true" />-->
-        <activity
-            android:name=".Auth.LoginActivity"
+            android:name=".guardactivities.RoleSelectionActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
-
-
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".item_guard_complaint"
+            android:exported="false" />
+        <activity
+            android:name=".guardactivities.GuardMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".guardactivities.GuardLoginActivity"
+            android:exported="false" />
 
-        </activity>
+        <activity
+            android:name=".Auth.SignupActivity"
+            android:exported="false" /> <!-- <activity -->
+        <!-- android:name=".LoginActivity" -->
+        <!-- android:exported="true" /> -->
+        <activity
+            android:name=".Auth.LoginActivity"
+            android:exported="true"/>
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
