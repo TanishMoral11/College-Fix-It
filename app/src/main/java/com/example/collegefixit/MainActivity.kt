@@ -1,7 +1,11 @@
 package com.example.collegefixit
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.airbnb.lottie.LottieAnimationView
+import com.airbnb.lottie.LottieCompositionFactory
+import com.airbnb.lottie.LottieListener
 import com.example.collegefixit.Fragments.ComplaintsListFragment
 import com.example.collegefixit.databinding.ActivityMainBinding
 

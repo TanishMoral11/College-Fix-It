@@ -1,5 +1,6 @@
 package com.example.collegefixit
 
+import android.animation.Animator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.collegefixit.databinding.ItemComplaintBinding
 import com.example.collegefixit.model.Complaint
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class ComplaintsAdapter(
@@ -37,21 +41,51 @@ class ComplaintsAdapter(
 
             // Check if the current user has upvoted this complaint
             val hasUpvoted = currentUserId in complaint.upvotedBy
-            binding.upvoteButton.isSelected = hasUpvoted
+            binding.upvoteIcon.setImageResource(
+                if(hasUpvoted) R.drawable.upvotesymbol else R.drawable.normalup
+            )
 
             // Handle upvote button click
-            binding.upvoteButton.setOnClickListener {
-                onUpvoteClick(complaint.id)
+            binding.upvoteIcon.setOnClickListener {
+
+                GlobalScope.launch(Dispatchers.Main){
+                    onUpvoteClick(complaint.id)
+
+                    val isUpvotedNow = currentUserId in complaint.upvotedBy
+                    binding.upvoteIcon.setImageResource(
+                        if(isUpvotedNow) R.drawable.upvotesymbol else R.drawable.normalup
+                    )
+
+                }
             }
 
             // Show the delete button only if the current user created the complaint
             if (complaint.userId == currentUserId) {
-                binding.deleteButton.visibility = View.VISIBLE
-                binding.deleteButton.setOnClickListener {
-                    onDeleteClick(complaint.id)
+               binding.deleteIcon.visibility = View.VISIBLE
+                binding.deleteIcon.setOnClickListener{
+                    binding.upvoteIcon.visibility = View.GONE
+                    binding.deleteIcon.visibility = View.GONE
+                    binding.deleteAnimationView.visibility = View.VISIBLE
+                    binding.deleteAnimationView.playAnimation()
+
+                    binding.deleteAnimationView.addAnimatorListener(object : Animator.AnimatorListener {
+                        override fun onAnimationStart(animation: Animator) {}
+                        override fun onAnimationEnd(animation: Animator) {
+                            onDeleteClick(complaint.id)
+                        }
+
+                        override fun onAnimationCancel(animation: Animator) {
+                            TODO("Not yet implemented")
+                        }
+
+                        override fun onAnimationRepeat(animation: Animator) {
+                            TODO("Not yet implemented")
+                        }
+
+                    })
                 }
             } else {
-                binding.deleteButton.visibility = View.GONE
+                binding.deleteIcon.visibility = View.GONE
             }
         }
     }
