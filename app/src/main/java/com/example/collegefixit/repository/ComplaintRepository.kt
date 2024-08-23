@@ -45,18 +45,6 @@ class ComplaintRepository {
             }
     }
 
-//    suspend fun upvoteComplaint(complaintId: String) {
-//        try {
-//            val complaintRef = complaintsCollection.document(complaintId)
-//            db.runTransaction { transaction ->
-//                val complaintSnapshot = transaction.get(complaintRef)
-//                val currentUpvoteCount = complaintSnapshot.getLong("upvotes") ?: 0
-//                transaction.update(complaintRef, "upvotes", currentUpvoteCount + 1)
-//            }.await()
-//        } catch (e: Exception) {
-//            throw e
-//        }
-//    }
     suspend fun toggleUpvote(complaintId: String, userId: String) {
         try {
             val complaintRef = complaintsCollection.document(complaintId)
