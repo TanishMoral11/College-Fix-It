@@ -25,6 +25,14 @@ class LoginActivity : AppCompatActivity() {
 
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
+
+
+
+        if(auth.currentUser!=null){
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+            return
+        }
        animate(findViewById<MaterialCardView>(R.id.cardView))
         // Access the TextInputLayouts and their contained TextInputEditTexts
         val emailInputLayout: TextInputLayout = findViewById(R.id.emailInputLayout)
