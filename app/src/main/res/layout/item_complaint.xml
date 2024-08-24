@@ -67,7 +67,6 @@
                 android:id="@+id/deleteAnimationView"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                android:layout_marginStart="-2dp"
                 app:lottie_url="https://lottie.host/e114c04d-8a2d-4d17-a889-1320c6d8c2d4/vQd9iq07Ry.json"
                 app:lottie_autoPlay="false"
                 app:lottie_loop="false"

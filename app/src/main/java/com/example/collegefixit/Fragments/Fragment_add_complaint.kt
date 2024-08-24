@@ -43,8 +43,8 @@ class AddComplaintFragment : Fragment() {
                     )
                     viewModel.addComplaint(complaint)
                     // Clear input fields and navigate back
-                    binding.titleEditText.text.clear()
-                    binding.descriptionEditText.text.clear()
+                    binding.titleEditText.text?.clear()
+                    binding.descriptionEditText.text?.clear()
                     requireActivity().supportFragmentManager.popBackStack()
 
                 } else {
