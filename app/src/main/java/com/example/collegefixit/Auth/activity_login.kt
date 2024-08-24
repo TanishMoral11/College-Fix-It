@@ -47,8 +47,14 @@ class LoginActivity : AppCompatActivity() {
 
         // Set up the login button click listener
         loginButton.setOnClickListener {
-            val email = emailEditText.text.toString()
+            val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString()
+
+            // Check for valid college email format
+            if (!email.endsWith("@iiitl.ac.in")) {
+                Toast.makeText(this, "Please use a valid college email address.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Please fill in all fields.", Toast.LENGTH_SHORT).show()

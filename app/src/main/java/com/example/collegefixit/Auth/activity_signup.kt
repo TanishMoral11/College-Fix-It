@@ -6,10 +6,10 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.collegefixit.R
+import com.google.firebase.auth.FirebaseAuth
 import com.google.android.material.card.MaterialCardView
 
 class SignupActivity : AppCompatActivity() {
@@ -35,6 +35,12 @@ class SignupActivity : AppCompatActivity() {
             val password = passwordEditText.text.toString().trim()
             val confirmPassword = confirmPasswordEditText.text.toString().trim()
 
+            // Check for valid college email format
+            if (!email.endsWith("@iiitl.ac.in")) {
+                Toast.makeText(this, "Please use a valid college email address.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             if (password != confirmPassword) {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -47,9 +53,8 @@ class SignupActivity : AppCompatActivity() {
                             user.sendEmailVerification()
                                 .addOnCompleteListener { emailTask ->
                                     if (emailTask.isSuccessful) {
-                                        // Inform the user and navigate to LoginActivity
-                                        Toast.makeText(this, "Verification email sent. You will be redirected to the login screen.", Toast.LENGTH_SHORT).show()
-                                        startActivity(Intent(this, LoginActivity::class.java)) // Correct navigation
+                                        Toast.makeText(this, "Verification email sent", Toast.LENGTH_SHORT).show()
+                                        startActivity(Intent(this, LoginActivity::class.java))
                                         finish()
                                     } else {
                                         Toast.makeText(this, "Failed to send verification email", Toast.LENGTH_SHORT).show()
