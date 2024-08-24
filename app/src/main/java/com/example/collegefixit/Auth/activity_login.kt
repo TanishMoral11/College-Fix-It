@@ -26,14 +26,15 @@ class LoginActivity : AppCompatActivity() {
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
 
-
-
-        if(auth.currentUser!=null){
+        // Check if the user is already logged in
+        if (auth.currentUser != null && auth.currentUser!!.isEmailVerified) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
             return
         }
-       animate(findViewById<MaterialCardView>(R.id.cardView))
+
+        animate(findViewById<MaterialCardView>(R.id.cardView))
+
         // Access the TextInputLayouts and their contained TextInputEditTexts
         val emailInputLayout: TextInputLayout = findViewById(R.id.emailInputLayout)
         val emailEditText: TextInputEditText = emailInputLayout.editText as TextInputEditText
@@ -58,9 +59,13 @@ class LoginActivity : AppCompatActivity() {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        // Navigate to home screen
-                        startActivity(Intent(this, MainActivity::class.java))
-                        finish()  // Finish the login activity
+                        // Check if email is verified
+                        if (auth.currentUser!!.isEmailVerified) {
+                            startActivity(Intent(this, MainActivity::class.java))
+                            finish()  // Finish the login activity
+                        } else {
+                            Toast.makeText(this, "Please verify your email before logging in.", Toast.LENGTH_SHORT).show()
+                        }
                     } else {
                         Toast.makeText(this, "Authentication failed. Please try again.", Toast.LENGTH_SHORT).show()
                     }
@@ -72,9 +77,9 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, SignupActivity::class.java))
         }
     }
-    private fun animate(card:MaterialCardView)
-    {
-        val animation=android.view.animation.AnimationUtils.loadAnimation(this,R.anim.bottom_to_top)
+
+    private fun animate(card: MaterialCardView) {
+        val animation = android.view.animation.AnimationUtils.loadAnimation(this, R.anim.bottom_to_top)
         card.startAnimation(animation)
     }
 }
