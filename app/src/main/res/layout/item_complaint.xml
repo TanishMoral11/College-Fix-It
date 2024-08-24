@@ -48,32 +48,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
-            <!-- Upvote Count -->
-            <TextView
-                android:id="@+id/upvoteCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{String.valueOf(complaint.upvotes)}"
-                android:textAppearance="?attr/textAppearanceBody1"
-                android:textColor="@color/white"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-            <!-- Upvote Icon -->
-            <ImageView
-                android:id="@+id/upvoteIcon"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginStart="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:src="@drawable/normalup"
-                app:layout_constraintTop_toTopOf="@id/upvoteCount"
-                app:layout_constraintBottom_toBottomOf="@id/upvoteCount"
-                app:layout_constraintStart_toEndOf="@id/upvoteCount" />
-
-            <!-- Delete Icon -->
+            <!-- Delete Icon (now on the left) -->
             <ImageView
                 android:id="@+id/deleteIcon"
                 android:layout_width="32dp"
@@ -81,25 +56,52 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:src="@drawable/delete"
-                android:background="@drawable/circular_ripple"
                 app:tint="@color/white"
-                app:layout_constraintTop_toTopOf="@id/upvoteCount"
-                app:layout_constraintBottom_toBottomOf="@id/upvoteCount"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
-            <!-- Lottie Animation for Delete -->
+
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/deleteAnimationView"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
+                android:layout_marginStart="-2dp"
                 app:lottie_url="https://lottie.host/e114c04d-8a2d-4d17-a889-1320c6d8c2d4/vQd9iq07Ry.json"
                 app:lottie_autoPlay="false"
                 app:lottie_loop="false"
                 android:visibility="gone"
                 app:layout_constraintTop_toTopOf="@id/deleteIcon"
                 app:layout_constraintBottom_toBottomOf="@id/deleteIcon"
-                app:layout_constraintEnd_toEndOf="@id/deleteIcon"
-                app:layout_constraintStart_toStartOf="@id/deleteIcon"/>
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <!-- Upvote Icon (now on the right) -->
+            <ImageView
+                android:id="@+id/upvoteIcon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/normalup"
+                app:layout_constraintTop_toTopOf="@id/deleteIcon"
+                app:layout_constraintBottom_toBottomOf="@id/deleteIcon"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Upvote Count (now to the left of upvote icon) -->
+            <TextView
+                android:id="@+id/upvoteCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{String.valueOf(complaint.upvotes)}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textColor="@color/white"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintTop_toTopOf="@id/upvoteIcon"
+                app:layout_constraintBottom_toBottomOf="@id/upvoteIcon"
+                app:layout_constraintEnd_toStartOf="@id/upvoteIcon"/>
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
