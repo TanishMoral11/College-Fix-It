@@ -1,6 +1,7 @@
 package com.example.collegefixit.guardactivities
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -9,6 +10,7 @@ import com.example.collegefixit.R
 import com.example.collegefixit.adapter.GuardComplaintsAdapter
 import com.example.collegefixit.databinding.ActivityGuardMainBinding
 import com.example.collegefixit.viewmodel.ComplaintViewModel
+import com.google.firebase.messaging.FirebaseMessaging
 
 class GuardMainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityGuardMainBinding
@@ -17,6 +19,7 @@ class GuardMainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        subscribeToGuardsTopic()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_guard_main)
 
         // Initialize ViewModel
@@ -36,5 +39,15 @@ class GuardMainActivity : AppCompatActivity() {
         viewModel.errorMessage.observe(this) { errorMessage ->
             // Show error message to the user (e.g., using a Toast or Snackbar)
         }
+    }
+    private fun subscribeToGuardsTopic() {
+        FirebaseMessaging.getInstance().subscribeToTopic("guards_notifications")
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("FCM", "Guard subscribed to notifications topic")
+                } else {
+                    Log.e("FCM", "Failed to subscribe guard to notifications topic", task.exception)
+                }
+            }
     }
 }

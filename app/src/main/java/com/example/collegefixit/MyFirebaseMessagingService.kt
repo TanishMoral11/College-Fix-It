@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.example.collegefixit.guardactivities.RoleSelectionActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
@@ -15,17 +16,26 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
+        //import value of role selection activity
+        val sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val role = sharedPref.getString("USER_ROLE", "") ?: ""
 
         val title = remoteMessage.notification?.title ?: "Notification"
         val body = remoteMessage.notification?.body ?: "You have a new notification"
 
         Log.d("FCM", "Message received: ${remoteMessage.notification?.body}")
         // Handle the received message and show a notification
-        remoteMessage.notification?.let { notification ->
-            sendNotification(notification.title ?: "New Complaint", notification.body ?: "")
+
+
+
+        if(role == "guard"){
+            sendNotification(title, body)
+        }
+        else {
+            return
         }
 
-        sendNotification(title, body)
+//        sendNotification(title, body)
     }
 
     private fun sendNotification(title: String, body: String) {

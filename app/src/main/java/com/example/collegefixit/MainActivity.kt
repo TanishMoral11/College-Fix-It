@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
         // Request notification permission
         askNotificationPermission()
-        subscribeToGuardsTopic()
+
 
         // Create Notification Channel for Android 8.0 and above
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -138,14 +138,5 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "FCM Token: $token", Toast.LENGTH_SHORT).show()
         }
     }
-    private fun subscribeToGuardsTopic() {
-        FirebaseMessaging.getInstance().subscribeToTopic("guards_notifications")
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d("FCM", "Guard subscribed to notifications topic")
-                } else {
-                    Log.e("FCM", "Failed to subscribe guard to notifications topic", task.exception)
-                }
-            }
-    }
+
 }
