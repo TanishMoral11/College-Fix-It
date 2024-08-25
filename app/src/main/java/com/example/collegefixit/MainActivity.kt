@@ -139,12 +139,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
     private fun subscribeToGuardsTopic() {
-        FirebaseMessaging.getInstance().subscribeToTopic("guards")
+        FirebaseMessaging.getInstance().subscribeToTopic("guards_notifications")
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Log.d("FCM", "Subscribed to guards topic")
+                    Log.d("FCM", "Guard subscribed to notifications topic")
                 } else {
-                    Log.e("FCM", "Failed to subscribe to guards topic", task.exception)
+                    Log.e("FCM", "Failed to subscribe guard to notifications topic", task.exception)
                 }
             }
     }

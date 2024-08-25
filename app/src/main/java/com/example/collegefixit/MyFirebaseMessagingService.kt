@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -17,6 +18,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val title = remoteMessage.notification?.title ?: "Notification"
         val body = remoteMessage.notification?.body ?: "You have a new notification"
+
+        Log.d("FCM", "Message received: ${remoteMessage.notification?.body}")
+        // Handle the received message and show a notification
+        remoteMessage.notification?.let { notification ->
+            sendNotification(notification.title ?: "New Complaint", notification.body ?: "")
+        }
 
         sendNotification(title, body)
     }
