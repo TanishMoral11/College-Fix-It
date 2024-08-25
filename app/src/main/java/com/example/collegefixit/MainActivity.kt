@@ -1,42 +1,67 @@
 package com.example.collegefixit
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
-import android.provider.ContactsContract.Profile
 import android.util.Log
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.airbnb.lottie.LottieAnimationView
-import com.airbnb.lottie.LottieCompositionFactory
-import com.airbnb.lottie.LottieListener
+import androidx.core.content.ContextCompat
 import com.example.collegefixit.Auth.LoginActivity
 import com.example.collegefixit.Fragments.ComplaintsListFragment
 import com.example.collegefixit.Fragments.fragment_profile
 import com.example.collegefixit.databinding.ActivityMainBinding
-import com.example.collegefixit.utils.Constants.Companion.auth
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var auth : FirebaseAuth
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
 
+        // Request notification permission
+        askNotificationPermission()
+        subscribeToGuardsTopic()
 
+        // Create Notification Channel for Android 8.0 and above
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel = NotificationChannel(
+                getString(R.string.notification_channel_id), // Use a string resource for the channel ID
+                "Channel Name",
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                description = "Channel for receiving notifications"
+            }
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
+
+        // Check user authentication status
         auth.addAuthStateListener { firebaseAuth ->
-            if(firebaseAuth.currentUser==null){
+            if (firebaseAuth.currentUser == null) {
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }
         }
 
+        // Initialize the layout and fragment manager
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Load the complaints list fragment as the default
+        // Load initial fragment
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fragmentContainer, ComplaintsListFragment())
@@ -44,7 +69,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // Handle bottom navigation item clicks
+        // Handle bottom navigation
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_complaints -> {
@@ -57,7 +82,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_add_complaint -> {
                     supportFragmentManager.beginTransaction().apply {
                         replace(R.id.fragmentContainer, AddComplaintFragment())
-                        addToBackStack(null) // Add to backstack to allow navigation back
+                        addToBackStack(null)
                         commit()
                     }
                     true
@@ -73,5 +98,54 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+    }
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            getToken()
+        } else {
+            Log.e("Permission", "Permission Denied")
+        }
+    }
+
+    private fun askNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                getToken()
+            } else {
+                requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+            }
+        } else {
+            getToken()
+        }
+    }
+
+    private fun getToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("FCM Token", "Fetching FCM registration token failed", task.exception)
+                return@addOnCompleteListener
+            }
+
+            val token = task.result
+            Log.i("FCM Token", token)
+            Toast.makeText(this, "FCM Token: $token", Toast.LENGTH_SHORT).show()
+        }
+    }
+    private fun subscribeToGuardsTopic() {
+        FirebaseMessaging.getInstance().subscribeToTopic("guards")
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("FCM", "Subscribed to guards topic")
+                } else {
+                    Log.e("FCM", "Failed to subscribe to guards topic", task.exception)
+                }
+            }
     }
 }

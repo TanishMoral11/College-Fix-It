@@ -4,6 +4,7 @@ plugins {
     // Apply kapt plugin for annotation processing
     id("kotlin-kapt")
     id("com.google.gms.google-services")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -63,6 +64,7 @@ dependencies {
     implementation ("com.google.firebase:firebase-firestore-ktx:24.4.1")
     implementation ("com.google.firebase:firebase-auth-ktx:22.1.1")
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+    implementation("com.google.firebase:firebase-messaging-ktx")
 
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -72,5 +74,10 @@ dependencies {
 
 
     implementation ("com.airbnb.android:lottie:5.0.3")
+
+    //Hilt
+    implementation("com.google.dagger:hilt-android:2.50")
+    implementation ("com.squareup.okhttp3:okhttp:4.10.0")
+    kapt("com.google.dagger:hilt-compiler:2.50")
 
 }
