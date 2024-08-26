@@ -5,6 +5,7 @@
     <color name="colorAccent">#00A5FF</color>
     <color name="textfield">#99B7AD</color>
     <color name="Black"> #000000</color>
+    <color name="accent_color">#FF4081</color>
 
     <!--colors for modern UI-->
     <color name="whiteTextColor">#FFF</color>

@@ -80,4 +80,6 @@ dependencies {
     implementation ("com.squareup.okhttp3:okhttp:4.10.0")
     kapt("com.google.dagger:hilt-compiler:2.50")
 
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+
 }
