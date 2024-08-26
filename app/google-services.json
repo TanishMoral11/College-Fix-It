@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "674809380584",
-    "project_id": "collegefixit-10beb",
-    "storage_bucket": "collegefixit-10beb.appspot.com"
+    "project_number": "343504989538",
+    "project_id": "collegefitit",
+    "storage_bucket": "collegefitit.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:674809380584:android:dffc4b5dccd9c769ae935d",
+        "mobilesdk_app_id": "1:343504989538:android:cca6a85fcf249863c5103b",
         "android_client_info": {
           "package_name": "com.example.collegefixit"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCbqJTBuRBi_MmLTYzQfU-Kmssfzw89iB4"
+          "current_key": "AIzaSyByG9MNwqiMonSPmsUihGX5DDF8KIFI5cA"
         }
       ],
       "services": {

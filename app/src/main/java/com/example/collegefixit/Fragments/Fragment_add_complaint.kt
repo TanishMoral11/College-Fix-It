@@ -93,7 +93,7 @@ class AddComplaintFragment : Fragment() {
 
         val requestBody = json.toString().toRequestBody("application/json".toMediaType())
         val request = Request.Builder()
-            .url("http://172.70.98.85:3000/complaint") // Use your server's actual URL here
+            .url("http://172.70.98.88:3000/") // Use your server's actual URL here
             .post(requestBody)
             .build()
 
