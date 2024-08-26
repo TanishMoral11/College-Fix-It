@@ -1,4 +1,6 @@
-# College Fix It
+![Screenshot 2024-08-26 191808](https://github.com/user-attachments/assets/1053eb36-fb41-4521-a7c1-05406c5513e1)
+
+# College Fix It🪛🪛
 
 Welcome to the College Fix It !! 🎓🚀 This app is designed to streamline the complaint registration process for students and ensure that their concerns are addressed promptly. With a clean and intuitive interface, students can easily register their complaints, and guards or authorities can manage and respond to these complaints efficiently.
 
@@ -22,11 +24,24 @@ Welcome to the College Fix It !! 🎓🚀 This app is designed to streamline the
 - **Complaint Deletion**  
   Students can easily delete their complaints if needed.
 
+- **Google Authentication**  
+  For easy and secure login, users can also sign in using Google Auth, streamlining the authentication process.
+
 - **Dynamic UI**  
   The app features a beautiful and responsive UI that adapts to various screen sizes.
 
 - **Bottom Navigation**  
   Navigate seamlessly between Home, Add Complaint, and Profile sections.
+
+## App ScreenShots
+
+![WhatsApp Image 2024-08-27 at 00 16 15_c61d4f58](https://github.com/user-attachments/assets/c6c7859d-890d-4673-a5d8-0cc707e260fd)
+![WhatsAppVideo2024-08-27at00 16 42_d8f14b6c-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/6a857fb7-e84a-4ac2-b88b-cf726426d117)
+![WhatsApp Image 2024-08-27 at 00 16 18_a1403a93](https://github.com/user-attachments/assets/49b044f7-d907-441d-8cc9-81149be4e546)
+![WhatsApp Image 2024-08-27 at 00 16 17_e7e18549](https://github.com/user-attachments/assets/08516370-cc75-474c-8ea9-ed1eb571216e)
+
+![WhatsApp Image 2024-08-27 at 00 16 16_f4bd572b](https://github.com/user-attachments/assets/257e35fb-6410-4e9d-817b-f91d93239eca)
+
 
 ## Tech Stack
 
@@ -62,12 +77,12 @@ Welcome to the College Fix It !! 🎓🚀 This app is designed to streamline the
 
 3. **Set up Firebase**
 
-    - Add your Firebase configuration files (`google-services.json` for Android).
-    - Follow the Firebase setup instructions to enable Authentication, Firestore, and Cloud Messaging.
+   - Add your Firebase configuration files (`google-services.json` for Android).
+   - Follow the Firebase setup instructions to enable Authentication, Firestore, and Cloud Messaging.
 
 4. **Run the app**
 
-    - Build and run the app on an Android device or emulator.
+   - Build and run the app on an Android device or emulator.
 
 ## Contributing
 
