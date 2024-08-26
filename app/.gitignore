@@ -1,2 +1,4 @@
 /build
-/tokens
+
+/tokens.json
+/google-services.json
