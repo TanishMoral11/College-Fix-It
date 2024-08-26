@@ -135,7 +135,6 @@ class MainActivity : AppCompatActivity() {
 
             val token = task.result
             Log.i("FCM Token", token)
-            Toast.makeText(this, "FCM Token: $token", Toast.LENGTH_SHORT).show()
         }
     }
 

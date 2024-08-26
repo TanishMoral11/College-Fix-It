@@ -1,3 +1,4 @@
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -81,5 +82,10 @@ dependencies {
     kapt("com.google.dagger:hilt-compiler:2.50")
 
     implementation ("de.hdodenhof:circleimageview:3.1.0")
+    implementation ("com.google.gms:google-services:4.3.15")
+    implementation ("com.google.android.gms:play-services-auth:21.0.0")
+    implementation ("com.google.android.gms:play-services-auth:20.5.0")
+    implementation ("com.google.firebase:firebase-auth-ktx:22.0.0")
+
 
 }

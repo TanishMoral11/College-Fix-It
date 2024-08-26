@@ -10,5 +10,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="notification_channel_id">default_channel_id</string>
+    <string name="server_client_id">343504989538-vhhhceo7202mpclqdp8io4o9mc3apan0.apps.googleusercontent.com</string>
+
 
 </resources>

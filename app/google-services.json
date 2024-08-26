@@ -12,7 +12,20 @@
           "package_name": "com.example.collegefixit"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "343504989538-vhhhceo7202mpclqdp8io4o9mc3apan0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.collegefixit",
+            "certificate_hash": "8e98b21ec099aea5adb5c8a9a10120cf9bd69ae1"
+          }
+        },
+        {
+          "client_id": "343504989538-em9ijgak7i9t8p3n4krpgol9ofl4jomg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyByG9MNwqiMonSPmsUihGX5DDF8KIFI5cA"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "343504989538-em9ijgak7i9t8p3n4krpgol9ofl4jomg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
