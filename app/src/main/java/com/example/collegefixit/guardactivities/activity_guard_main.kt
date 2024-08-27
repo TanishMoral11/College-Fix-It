@@ -1,6 +1,5 @@
 package com.example.collegefixit.guardactivities
 
-import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -17,6 +16,7 @@ import com.example.collegefixit.viewmodel.ComplaintViewModel
 import com.google.firebase.messaging.FirebaseMessaging
 
 class GuardMainActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityGuardMainBinding
     private lateinit var viewModel: ComplaintViewModel
     private lateinit var complaintsAdapter: GuardComplaintsAdapter
@@ -24,8 +24,8 @@ class GuardMainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         subscribeToGuardsTopic()
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_guard_main)
 
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_guard_main)
         viewModel = ViewModelProvider(this).get(ComplaintViewModel::class.java)
 
         setupRecyclerView()
@@ -48,21 +48,23 @@ class GuardMainActivity : AppCompatActivity() {
         }
 
         viewModel.errorMessage.observe(this) { errorMessage ->
-            Log.e(TAG, errorMessage)
+            Log.e("GuardMainActivity", errorMessage)
             // Handle the error message
         }
     }
 
     private fun openComplaintDetails(complaint: Complaint) {
         val fragment = ComplaintDetailsFragment.newInstance(complaint.id)
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, fragment)
-            .addToBackStack(null)
-            .commit()
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragmentContainer, fragment)  // Use the new container ID
+            addToBackStack(null)
+            commit()
+        }
 
         // Hide the RecyclerView
         binding.complaintsRecyclerView.visibility = View.GONE
     }
+
 
     private fun subscribeToGuardsTopic() {
         FirebaseMessaging.getInstance().subscribeToTopic("guards_notifications")
@@ -78,6 +80,7 @@ class GuardMainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStack()
+            // Show the RecyclerView again when navigating back
             binding.complaintsRecyclerView.visibility = View.VISIBLE
         } else {
             super.onBackPressed()

@@ -1,5 +1,7 @@
 package com.example.collegefixit.repository
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.example.collegefixit.model.Complaint
 import com.google.firebase.firestore.ListenerRegistration
@@ -10,7 +12,6 @@ class ComplaintRepository {
     private val db = FirebaseFirestore.getInstance()
     private val complaintsCollection = db.collection("complaints")
 
-
     suspend fun isUserComplaintOwner(complaintId: String, userId: String): Boolean {
         return try {
             val complaintDoc = complaintsCollection.document(complaintId).get().await()
@@ -20,22 +21,18 @@ class ComplaintRepository {
         }
     }
 
-    suspend fun deleteComplaint(complaintId: String){
-        try{
+    suspend fun deleteComplaint(complaintId: String) {
+        try {
             complaintsCollection.document(complaintId).delete().await()
-
-        }
-        catch (e: Exception){
+        } catch (e: Exception) {
             throw e
         }
     }
 
     fun getPendingComplaintsRealtime(onUpdate: (List<Complaint>) -> Unit): ListenerRegistration {
         return complaintsCollection
-            .whereEqualTo("status", "Pending")
             .addSnapshotListener { snapshot, exception ->
                 if (exception != null) {
-                    // Handle error
                     return@addSnapshotListener
                 }
                 val complaints = snapshot?.documents?.mapNotNull {
@@ -54,11 +51,9 @@ class ComplaintRepository {
                 val upvotedBy = complaintSnapshot.get("upvotedBy") as? MutableList<String> ?: mutableListOf()
 
                 if (userId in upvotedBy) {
-                    // User has already upvoted, so remove their upvote
                     transaction.update(complaintRef, "upvotes", currentUpvotes - 1)
                     upvotedBy.remove(userId)
                 } else {
-                    // User hasn't upvoted yet, so add their upvote
                     transaction.update(complaintRef, "upvotes", currentUpvotes + 1)
                     upvotedBy.add(userId)
                 }
@@ -72,6 +67,26 @@ class ComplaintRepository {
     suspend fun addComplaint(complaint: Complaint) {
         try {
             complaintsCollection.add(complaint).await()
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+    fun getComplaintByIdLive(id: String): LiveData<Complaint?> {
+        val complaintLiveData = MutableLiveData<Complaint?>()
+        complaintsCollection.document(id).addSnapshotListener { snapshot, exception ->
+            if (exception != null) {
+                complaintLiveData.value = null
+                return@addSnapshotListener
+            }
+            complaintLiveData.value = snapshot?.toObject(Complaint::class.java)?.copy(id = snapshot.id)
+        }
+        return complaintLiveData
+    }
+
+    suspend fun updateComplaintStatus(complaintId: String, newStatus: String) {
+        try {
+            complaintsCollection.document(complaintId).update("status", newStatus).await()
         } catch (e: Exception) {
             throw e
         }

@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 class ComplaintsAdapter(
     private val onUpvoteClick: (String) -> Unit,
-    private val onDeleteClick: (String) -> Unit // Callback for deleting complaints
+    private val onDeleteClick: (String) -> Unit
 ) : ListAdapter<Complaint, ComplaintsAdapter.ComplaintViewHolder>(ComplaintDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComplaintViewHolder {
@@ -33,33 +33,32 @@ class ComplaintsAdapter(
         fun bind(complaint: Complaint) {
             binding.complaint = complaint
 
-            // Set the current upvote count
+            // Update UI according to status
+            when (complaint.status) {
+                "Pending" -> binding.statusIcon.setImageResource(R.drawable.red_dot)
+                "On Hold" -> binding.statusIcon.setImageResource(R.drawable.pending)
+                "Solved" -> binding.statusIcon.setImageResource(R.drawable.greentick)
+            }
+
             binding.upvoteCount.text = complaint.upvotes.toString()
 
             val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
-
-            // Check if the current user has upvoted this complaint
             val hasUpvoted = currentUserId in complaint.upvotedBy
             binding.upvoteIcon.setImageResource(
-                if(hasUpvoted) R.drawable.upvotesymbol else R.drawable.normalup
+                if (hasUpvoted) R.drawable.upvotesymbol else R.drawable.normalup
             )
 
-            // Handle upvote button click
             binding.upvoteIcon.setOnClickListener {
                 GlobalScope.launch(Dispatchers.Main) {
                     onUpvoteClick(complaint.id)
-
-                    // Update UI after upvote state changes
                     val isUpvotedNow = currentUserId in complaint.upvotedBy
                     binding.upvoteIcon.setImageResource(
                         if (isUpvotedNow) R.drawable.upvotesymbol else R.drawable.normalup
                     )
-                    // Update upvote count visually
                     binding.upvoteCount.text = complaint.upvotes.toString()
                 }
             }
 
-            // Show the delete button only if the current user created the complaint
             if (complaint.userId == currentUserId) {
                 binding.deleteIcon.visibility = View.VISIBLE
                 binding.deleteIcon.setOnClickListener {
@@ -68,13 +67,11 @@ class ComplaintsAdapter(
                     binding.deleteAnimationView.visibility = View.VISIBLE
                     binding.deleteAnimationView.playAnimation()
 
-                    // Play delete animation before actually deleting the complaint
                     binding.deleteAnimationView.addAnimatorListener(object : Animator.AnimatorListener {
                         override fun onAnimationStart(animation: Animator) {}
                         override fun onAnimationEnd(animation: Animator) {
-                            onDeleteClick(complaint.id) // Call the delete callback after animation ends
+                            onDeleteClick(complaint.id)
                         }
-
                         override fun onAnimationCancel(animation: Animator) {}
                         override fun onAnimationRepeat(animation: Animator) {}
                     })

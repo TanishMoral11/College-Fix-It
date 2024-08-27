@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.collegefixit.ComplaintsAdapter
 import com.example.collegefixit.databinding.FragmentComplaintDetailsBinding
 import com.example.collegefixit.viewmodel.ComplaintViewModel
 
@@ -14,16 +15,25 @@ class ComplaintDetailsFragment : Fragment() {
     private var _binding: FragmentComplaintDetailsBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: ComplaintViewModel
+    private lateinit var adapter: ComplaintsAdapter
+    private var complaintId: String? = null
 
     companion object {
-        private const val ARG_COMPLAINT_ID = "complaintId"
+        private const val ARG_COMPLAINT_ID = "complaint_id"
 
         fun newInstance(complaintId: String): ComplaintDetailsFragment {
-            val fragment = ComplaintDetailsFragment()
-            val args = Bundle()
-            args.putString(ARG_COMPLAINT_ID, complaintId)
-            fragment.arguments = args
-            return fragment
+            return ComplaintDetailsFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_COMPLAINT_ID, complaintId)
+                }
+            }
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            complaintId = it.getString(ARG_COMPLAINT_ID)
         }
     }
 
@@ -38,9 +48,17 @@ class ComplaintDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(requireActivity())[ComplaintViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity()).get(ComplaintViewModel::class.java)
 
-        val complaintId = arguments?.getString(ARG_COMPLAINT_ID)
+        adapter = ComplaintsAdapter(
+            onUpvoteClick = { complaintId ->
+                viewModel.toggleUpvote(complaintId)
+            },
+            onDeleteClick = { complaintId ->
+                viewModel.deleteComplaint(complaintId)
+            }
+        )
+
         complaintId?.let { id ->
             viewModel.getComplaintById(id).observe(viewLifecycleOwner) { complaint ->
                 binding.complaint = complaint
@@ -48,16 +66,26 @@ class ComplaintDetailsFragment : Fragment() {
         }
 
         binding.holdButton.setOnClickListener {
-            // Implement hold functionality
+            complaintId?.let { id ->
+                viewModel.updateComplaintStatus(id, "On Hold")
+                activity?.supportFragmentManager?.popBackStack()
+            }
         }
 
         binding.solvedButton.setOnClickListener {
-            // Implement solved functionality
+            complaintId?.let { id ->
+                viewModel.updateComplaintStatus(id, "Solved")
+                activity?.supportFragmentManager?.popBackStack()
+            }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    fun getAdapter(): ComplaintsAdapter {
+        return adapter
     }
 }
