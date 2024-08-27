@@ -3,6 +3,7 @@ package com.example.collegefixit.guardactivities
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -27,16 +28,21 @@ class GuardMainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this).get(ComplaintViewModel::class.java)
 
+        setupRecyclerView()
+        observeComplaints()
+    }
+
+    private fun setupRecyclerView() {
         binding.complaintsRecyclerView.layoutManager = LinearLayoutManager(this)
         complaintsAdapter = GuardComplaintsAdapter(
             onDetailsClick = { complaint ->
                 openComplaintDetails(complaint)
             }
         )
-
-
         binding.complaintsRecyclerView.adapter = complaintsAdapter
+    }
 
+    private fun observeComplaints() {
         viewModel.complaints.observe(this) { complaints ->
             complaintsAdapter.submitList(complaints)
         }
@@ -46,17 +52,16 @@ class GuardMainActivity : AppCompatActivity() {
             // Handle the error message
         }
     }
+
     private fun openComplaintDetails(complaint: Complaint) {
-        val fragment = ComplaintDetailsFragment().apply {
-            arguments = Bundle().apply {
-                putString("complaintId", complaint.id)
-            }
-        }
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragmentContainer, fragment)
-            addToBackStack(null)
-            commit()
-        }
+        val fragment = ComplaintDetailsFragment.newInstance(complaint.id)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, fragment)
+            .addToBackStack(null)
+            .commit()
+
+        // Hide the RecyclerView
+        binding.complaintsRecyclerView.visibility = View.GONE
     }
 
     private fun subscribeToGuardsTopic() {
@@ -68,5 +73,14 @@ class GuardMainActivity : AppCompatActivity() {
                     Log.e("FCM", "Failed to subscribe guard to notifications topic", task.exception)
                 }
             }
+    }
+
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+            binding.complaintsRecyclerView.visibility = View.VISIBLE
+        } else {
+            super.onBackPressed()
+        }
     }
 }

@@ -15,6 +15,18 @@ class ComplaintDetailsFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var viewModel: ComplaintViewModel
 
+    companion object {
+        private const val ARG_COMPLAINT_ID = "complaintId"
+
+        fun newInstance(complaintId: String): ComplaintDetailsFragment {
+            val fragment = ComplaintDetailsFragment()
+            val args = Bundle()
+            args.putString(ARG_COMPLAINT_ID, complaintId)
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,12 +38,9 @@ class ComplaintDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize the ViewModel
         viewModel = ViewModelProvider(requireActivity())[ComplaintViewModel::class.java]
 
-        // Access arguments, e.g., complaintId
-        val complaintId = arguments?.getString("complaintId")
-
+        val complaintId = arguments?.getString(ARG_COMPLAINT_ID)
         complaintId?.let { id ->
             viewModel.getComplaintById(id).observe(viewLifecycleOwner) { complaint ->
                 binding.complaint = complaint
