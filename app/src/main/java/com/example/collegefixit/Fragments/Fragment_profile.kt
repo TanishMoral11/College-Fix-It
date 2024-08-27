@@ -35,6 +35,7 @@ class fragment_profile : Fragment() {
 
         binding.logoutButton.setOnClickListener {
             auth.signOut()
+            LoginActivity().googleSignInClient.signOut()
 
             val intent = Intent(activity, LoginActivity::class.java)
             startActivity(intent)

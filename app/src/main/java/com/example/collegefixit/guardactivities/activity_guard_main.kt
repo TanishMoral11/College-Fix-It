@@ -1,14 +1,17 @@
 package com.example.collegefixit.guardactivities
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.collegefixit.Fragments.ComplaintDetailsFragment
 import com.example.collegefixit.R
 import com.example.collegefixit.adapter.GuardComplaintsAdapter
 import com.example.collegefixit.databinding.ActivityGuardMainBinding
+import com.example.collegefixit.model.Complaint
 import com.example.collegefixit.viewmodel.ComplaintViewModel
 import com.google.firebase.messaging.FirebaseMessaging
 
@@ -22,24 +25,40 @@ class GuardMainActivity : AppCompatActivity() {
         subscribeToGuardsTopic()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_guard_main)
 
-        // Initialize ViewModel
         viewModel = ViewModelProvider(this).get(ComplaintViewModel::class.java)
 
-        // Set up RecyclerView
         binding.complaintsRecyclerView.layoutManager = LinearLayoutManager(this)
-        complaintsAdapter = GuardComplaintsAdapter()
+        complaintsAdapter = GuardComplaintsAdapter(
+            onDetailsClick = { complaint ->
+                openComplaintDetails(complaint)
+            }
+        )
+
+
         binding.complaintsRecyclerView.adapter = complaintsAdapter
 
-        // Observe complaints from ViewModel
         viewModel.complaints.observe(this) { complaints ->
             complaintsAdapter.submitList(complaints)
         }
 
-        // Observe error messages
         viewModel.errorMessage.observe(this) { errorMessage ->
-            // Show error message to the user (e.g., using a Toast or Snackbar)
+            Log.e(TAG, errorMessage)
+            // Handle the error message
         }
     }
+    private fun openComplaintDetails(complaint: Complaint) {
+        val fragment = ComplaintDetailsFragment().apply {
+            arguments = Bundle().apply {
+                putString("complaintId", complaint.id)
+            }
+        }
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragmentContainer, fragment)
+            addToBackStack(null)
+            commit()
+        }
+    }
+
     private fun subscribeToGuardsTopic() {
         FirebaseMessaging.getInstance().subscribeToTopic("guards_notifications")
             .addOnCompleteListener { task ->

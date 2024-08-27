@@ -23,6 +23,7 @@
             android:padding="16dp">
 
             <!-- Complaint Title -->
+
             <TextView
                 android:id="@+id/titleTextView"
                 android:layout_width="0dp"
@@ -34,6 +35,14 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
+
+            <ImageView
+                android:id="@+id/statusIcon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                app:layout_constraintBottom_toTopOf="@+id/upvoteIcon"
+                app:layout_constraintEnd_toEndOf="@+id/titleTextView"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <!-- Complaint Description -->
             <TextView

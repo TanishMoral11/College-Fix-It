@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.collegefixit.R
 import com.example.collegefixit.model.Complaint
 
-class GuardComplaintsAdapter : ListAdapter<Complaint, GuardComplaintsAdapter.ComplaintViewHolder>(ComplaintDiffCallback()) {
+class GuardComplaintsAdapter(
+    private val onDetailsClick: (Complaint) -> Unit // Callback for handling "More Details" click
+) : ListAdapter<Complaint, GuardComplaintsAdapter.ComplaintViewHolder>(ComplaintDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComplaintViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.activity_item_guard_complaint, parent, false)
@@ -26,13 +28,17 @@ class GuardComplaintsAdapter : ListAdapter<Complaint, GuardComplaintsAdapter.Com
         private val titleTextView: TextView = itemView.findViewById(R.id.titleTextView)
         private val descriptionTextView: TextView = itemView.findViewById(R.id.descriptionTextView)
         private val upvoteCountTextView: TextView = itemView.findViewById(R.id.upvoteCount)
-        // Other views...
+        private val moreDetailsButton: View = itemView.findViewById(R.id.moreDetailsIcon) // Assuming you have a button or icon for more details
 
         fun bind(complaint: Complaint) {
             titleTextView.text = complaint.title
             descriptionTextView.text = complaint.description
             upvoteCountTextView.text = complaint.upvotes.toString()
-            // Set up other views...
+
+            // Set up "More Details" button click listener
+            moreDetailsButton.setOnClickListener {
+                onDetailsClick(complaint)
+            }
         }
     }
 

@@ -14,7 +14,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-
 class ComplaintsAdapter(
     private val onUpvoteClick: (String) -> Unit,
     private val onDeleteClick: (String) -> Unit // Callback for deleting complaints
@@ -47,41 +46,37 @@ class ComplaintsAdapter(
 
             // Handle upvote button click
             binding.upvoteIcon.setOnClickListener {
-
-                GlobalScope.launch(Dispatchers.Main){
+                GlobalScope.launch(Dispatchers.Main) {
                     onUpvoteClick(complaint.id)
 
+                    // Update UI after upvote state changes
                     val isUpvotedNow = currentUserId in complaint.upvotedBy
                     binding.upvoteIcon.setImageResource(
-                        if(isUpvotedNow) R.drawable.upvotesymbol else R.drawable.normalup
+                        if (isUpvotedNow) R.drawable.upvotesymbol else R.drawable.normalup
                     )
-
+                    // Update upvote count visually
+                    binding.upvoteCount.text = complaint.upvotes.toString()
                 }
             }
 
             // Show the delete button only if the current user created the complaint
             if (complaint.userId == currentUserId) {
-               binding.deleteIcon.visibility = View.VISIBLE
-                binding.deleteIcon.setOnClickListener{
+                binding.deleteIcon.visibility = View.VISIBLE
+                binding.deleteIcon.setOnClickListener {
                     binding.upvoteIcon.visibility = View.GONE
                     binding.deleteIcon.visibility = View.GONE
                     binding.deleteAnimationView.visibility = View.VISIBLE
                     binding.deleteAnimationView.playAnimation()
 
+                    // Play delete animation before actually deleting the complaint
                     binding.deleteAnimationView.addAnimatorListener(object : Animator.AnimatorListener {
                         override fun onAnimationStart(animation: Animator) {}
                         override fun onAnimationEnd(animation: Animator) {
-                            onDeleteClick(complaint.id)
+                            onDeleteClick(complaint.id) // Call the delete callback after animation ends
                         }
 
-                        override fun onAnimationCancel(animation: Animator) {
-                            TODO("Not yet implemented")
-                        }
-
-                        override fun onAnimationRepeat(animation: Animator) {
-                            TODO("Not yet implemented")
-                        }
-
+                        override fun onAnimationCancel(animation: Animator) {}
+                        override fun onAnimationRepeat(animation: Animator) {}
                     })
                 }
             } else {
