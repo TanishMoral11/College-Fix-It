@@ -3,6 +3,7 @@ package com.example.collegefixit.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -29,11 +30,19 @@ class GuardComplaintsAdapter(
         private val descriptionTextView: TextView = itemView.findViewById(R.id.descriptionTextView)
         private val upvoteCountTextView: TextView = itemView.findViewById(R.id.upvoteCount)
         private val moreDetailsButton: View = itemView.findViewById(R.id.moreDetailsIcon) // Assuming you have a button or icon for more details
+        private val statusIcon: ImageView = itemView.findViewById(R.id.statusIcon)
 
         fun bind(complaint: Complaint) {
             titleTextView.text = complaint.title
             descriptionTextView.text = complaint.description
             upvoteCountTextView.text = complaint.upvotes.toString()
+
+            // Update status icon based on complaint status
+            when (complaint.status) {
+                "Pending" -> statusIcon.setImageResource(R.drawable.red_dot)
+                "On Hold" -> statusIcon.setImageResource(R.drawable.pending)
+                "Solved" -> statusIcon.setImageResource(R.drawable.greentick)
+            }
 
             // Set up "More Details" button click listener
             moreDetailsButton.setOnClickListener {
