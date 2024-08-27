@@ -92,7 +92,7 @@ class ComplaintDetailsFragment : Fragment() {
         return adapter
     }
     private fun navigateToGuardMainActivity() {
-        val intent = android.content.Intent(requireContext(), LoginActivity::class.java)
+        val intent = android.content.Intent(requireContext(), GuardMainActivity::class.java)
         intent.flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
         requireActivity().finish()
