@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.collegefixit.Auth.LoginActivity
 import com.example.collegefixit.ComplaintsAdapter
 import com.example.collegefixit.databinding.FragmentComplaintDetailsBinding
+import com.example.collegefixit.guardactivities.GuardMainActivity
 import com.example.collegefixit.viewmodel.ComplaintViewModel
 
 class ComplaintDetailsFragment : Fragment() {
@@ -68,14 +70,15 @@ class ComplaintDetailsFragment : Fragment() {
         binding.holdButton.setOnClickListener {
             complaintId?.let { id ->
                 viewModel.updateComplaintStatus(id, "On Hold")
-                activity?.supportFragmentManager?.popBackStack()
+//                activity?.supportFragmentManager?.popBackStack()
+                navigateToGuardMainActivity()
             }
         }
 
         binding.solvedButton.setOnClickListener {
             complaintId?.let { id ->
                 viewModel.updateComplaintStatus(id, "Solved")
-                activity?.supportFragmentManager?.popBackStack()
+                navigateToGuardMainActivity()
             }
         }
     }
@@ -87,5 +90,11 @@ class ComplaintDetailsFragment : Fragment() {
 
     fun getAdapter(): ComplaintsAdapter {
         return adapter
+    }
+    private fun navigateToGuardMainActivity() {
+        val intent = android.content.Intent(requireContext(), LoginActivity::class.java)
+        intent.flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        requireActivity().finish()
     }
 }

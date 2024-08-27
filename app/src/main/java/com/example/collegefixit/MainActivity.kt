@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.collegefixit.Auth.LoginActivity
 import com.example.collegefixit.Fragments.ComplaintsListFragment
-import com.example.collegefixit.Fragments.fragment_profile
+import com.example.collegefixit.Fragments.FragmentProfile
 import com.example.collegefixit.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.nav_profile -> {
                     supportFragmentManager.beginTransaction().apply {
-                        replace(R.id.fragmentContainer, fragment_profile())
+                        replace(R.id.fragmentContainer, FragmentProfile())
                         addToBackStack(null)
                         commit()
                     }

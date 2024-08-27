@@ -44,7 +44,6 @@ class LoginActivity : AppCompatActivity() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
-            .setAccountName(null.toString()) // Force account picker to show
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
@@ -115,10 +114,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun signInWithGoogle() {
-        googleSignInClient.signOut().addOnCompleteListener(this) {
-            val signInIntent = googleSignInClient.signInIntent
-            startActivityForResult(signInIntent, RC_SIGN_IN)
-        }
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -150,8 +147,9 @@ class LoginActivity : AppCompatActivity() {
                             finish()
                         } else {
                             auth.signOut()
-                            googleSignInClient.signOut()
-                            Toast.makeText(this, "Please use a valid college email address.", Toast.LENGTH_SHORT).show()
+                            googleSignInClient.signOut().addOnCompleteListener {
+                                Toast.makeText(this, "Please use a valid college email address.", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
                 } else {
