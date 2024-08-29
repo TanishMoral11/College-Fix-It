@@ -1,17 +1,23 @@
 package com.example.collegefixit.Fragments
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.example.collegefixit.Auth.LoginActivity
 import com.example.collegefixit.R
 import com.example.collegefixit.databinding.FragmentProfileBinding
-import com.example.collegefixit.guardactivities.RoleSelectionActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -26,7 +32,7 @@ class FragmentProfile : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -40,6 +46,8 @@ class FragmentProfile : Fragment() {
         val currentUser = auth.currentUser
         currentUser?.let { user ->
             updateUIWithUserInfo(user)
+        } ?: run {
+            Log.e("FragmentProfile", "No current user found")
         }
 
         binding.logoutButton.setOnClickListener {
@@ -57,14 +65,38 @@ class FragmentProfile : Fragment() {
             binding.batchTextView.text = calculateBatch(rollNo)
             binding.nameTextView.text = user.displayName ?: "User"
 
-            // Check if the user signed in with Google
-            val account = GoogleSignIn.getLastSignedInAccount(requireContext())
-            if (account != null) {
-                binding.profileImageView.setImageURI(account.photoUrl)
-            } else {
-                // Set a default profile image if not signed in with Google
-                binding.profileImageView.setImageResource(R.drawable.defaultprofile)
-            }
+            loadProfileImage(user)
+        } ?: run {
+            Log.e("FragmentProfile", "User email is null")
+        }
+    }
+
+    private fun loadProfileImage(user: FirebaseUser) {
+        val photoUrl = user.photoUrl
+        Log.d("FragmentProfile", "Attempting to load profile image. PhotoUrl: $photoUrl")
+
+        if (photoUrl != null) {
+            Glide.with(this)
+                .load(photoUrl)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .placeholder(R.drawable.defaultprofile)
+                .error(R.drawable.defaultprofile)
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                        Log.e("FragmentProfile", "Failed to load image", e)
+                        return false
+                    }
+
+                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                        Log.d("FragmentProfile", "Image loaded successfully")
+                        return false
+                    }
+                })
+                .into(binding.profileImageView)
+        } else {
+            Log.d("FragmentProfile", "PhotoUrl is null, setting default image")
+            binding.profileImageView.setImageResource(R.drawable.defaultprofile)
         }
     }
 
