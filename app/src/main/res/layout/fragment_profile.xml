@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".Fragments.fragment_profile">
+    tools:context=".Fragments.FragmentProfile">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/profileCardView"
@@ -20,9 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="24dp">
 
-            <!-- Corrected tag closure here -->
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profileImageView"
                 android:layout_width="120dp"
@@ -39,45 +38,77 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
-                android:text="Name"
+                android:text="Tanish Moral"
                 android:textColor="@color/Black"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/rollNoInputLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <TextView
+                android:id="@+id/RollNo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="Roll Number">
+                android:layout_marginTop="24dp"
+                android:textColor="@color/Black"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:text="LCB2023045"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/rollNoEditText"
-                    android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:inputType="text" />
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColor="@color/Black"
+                    android:text="Batch:"/>
 
-            </com.google.android.material.textfield.TextInputLayout>
+                <TextView
+                    android:id="@+id/batchTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColor="@color/Black"
+                    android:textStyle="bold"
+                    android:text="2026"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColor="@color/Black"
+                    android:text="Year:"/>
+
+                <TextView
+                    android:id="@+id/year"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColor="@color/Black"
+                    android:textStyle="bold"
+                    android:text="3nd"/>
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/logoutButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:text="Log Out"
+                android:textAllCaps="false"
+                app:cornerRadius="8dp"/>
 
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/logoutButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="324dp"
-        android:paddingStart="32dp"
-        android:paddingEnd="32dp"
-        android:text="Log Out"
-        android:textAllCaps="false"
-        app:cornerRadius="24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
