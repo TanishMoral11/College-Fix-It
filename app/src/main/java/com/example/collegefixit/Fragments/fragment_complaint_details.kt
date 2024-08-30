@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.collegefixit.Auth.LoginActivity
 import com.example.collegefixit.ComplaintsAdapter
 import com.example.collegefixit.databinding.FragmentComplaintDetailsBinding
@@ -64,6 +65,16 @@ class ComplaintDetailsFragment : Fragment() {
         complaintId?.let { id ->
             viewModel.getComplaintById(id).observe(viewLifecycleOwner) { complaint ->
                 binding.complaint = complaint
+                if (complaint != null) {
+                    complaint.imageUrl?.let{url ->
+                        binding.attachedPhotoPreview.visibility = View.VISIBLE
+                        Glide.with(this)
+                            .load(url)
+                            .into(binding.attachedPhotoPreview)
+                    } ?: run {
+                        binding.attachedPhotoPreview.visibility = View.GONE
+                    }
+                }
             }
         }
 

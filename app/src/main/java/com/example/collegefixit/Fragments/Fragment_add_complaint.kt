@@ -16,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.collegefixit.Fragments.ComplaintsListFragment
 import com.example.collegefixit.databinding.FragmentAddComplaintBinding
 import com.example.collegefixit.model.Complaint
 import com.example.collegefixit.viewmodel.ComplaintViewModel
@@ -96,6 +97,7 @@ class AddComplaintFragment : Fragment() {
     private fun submitComplaint() {
         val title = binding.titleEditText.text.toString()
         val description = binding.descriptionEditText.text.toString()
+        val ComplaintsListFragment = ComplaintsListFragment()
 
         if (title.isBlank() || description.isBlank()) {
             showToast("Please fill in all fields")
@@ -113,6 +115,11 @@ class AddComplaintFragment : Fragment() {
         } else {
             submitComplaintWithoutImage(userId, title, description)
         }
+
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, ComplaintsListFragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun uploadImageAndSubmitComplaint(uri: Uri, path: String, userId: String, title: String, description: String) {
