@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
         <variable
             name="viewModel"
@@ -9,23 +11,24 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/loginBkColor">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="24dp"
-            android:background="@drawable/complaint_form_background">
+            android:background="@color/formBackgroundColor">
 
             <TextView
                 android:id="@+id/formTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Submit a Complaint"
-                android:textSize="24sp"
+                android:textSize="28sp"
                 android:textStyle="bold"
-                android:textColor="#212121"
-                android:layout_marginBottom="24dp"
+                android:textColor="@color/primaryTextColor"
+                android:layout_marginBottom="32dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -34,7 +37,7 @@
                 android:id="@+id/titleInputLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 app:layout_constraintTop_toBottomOf="@id/formTitle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -45,7 +48,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Title"
-                    android:inputType="textCapSentences"/>
+                    android:inputType="textCapSentences"
+                    android:maxLength="100"
+                    android:textColor="@color/Black"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -64,9 +69,57 @@
                     android:layout_height="wrap_content"
                     android:hint="Description"
                     android:inputType="textMultiLine"
-                    android:minLines="3"
-                    android:gravity="top|start"/>
+                    android:minLines="4"
+                    android:maxLines="8"
+                    android:gravity="top|start"
+                    android:textColor="@color/Black"/>
             </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/locationInputLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/descriptionInputLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/locationEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Location"
+                    android:inputType="textCapSentences"
+                    android:textColor="@color/Black"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/attachPhotoButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Attach Photo"
+                android:textAllCaps="false"
+                android:layout_marginTop="24dp"
+                app:icon="@drawable/attach_photo"
+                app:layout_constraintTop_toBottomOf="@id/locationInputLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:textColor="@color/colorPrimary"
+                app:strokeColor="@color/colorPrimary"
+                app:iconTint="@color/colorPrimary"/>
+
+            <ImageView
+                android:id="@+id/attachedPhotoPreview"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="8dp"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/attachPhotoButton"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:src="@tools:sample/backgrounds/scenic"
+                tools:visibility="gone"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/submitButton"
@@ -74,12 +127,14 @@
                 android:layout_height="wrap_content"
                 android:text="Submit Complaint"
                 android:textAllCaps="false"
-                android:padding="12dp"
-                android:layout_marginTop="24dp"
-                app:layout_constraintTop_toBottomOf="@id/descriptionInputLayout"
+                android:padding="16dp"
+                android:layout_marginTop="32dp"
+                app:layout_constraintTop_toBottomOf="@id/attachedPhotoPreview"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"/>
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:backgroundTint="@color/colorPrimary"
+                android:textColor="@color/whiteTextColor"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

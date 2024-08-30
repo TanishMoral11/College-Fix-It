@@ -9,6 +9,7 @@ data class Complaint(
     var status: String = "Pending",
     var upvotes: Int = 0,
     var upvotedBy: MutableList<String> = mutableListOf(),
-    val userId: String = "" , // ID of the user who created the complaint
-    val timestamp: Long = System.currentTimeMillis()
+    val userId: String = "",
+    val timestamp: Long = System.currentTimeMillis(),
+    var imageUrl: String? = null
 )

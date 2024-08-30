@@ -16,4 +16,11 @@
     <color name="whiteCardColor">#FFF</color>
     <color name="white">#FFF</color>
     <color name="formBackgroundColor">#FFFFFF</color>
+
+
+    <color name="errorColor">#F44336</color>
+    <color name="successColor">#4CAF50</color>
+    <color name="warningColor">#FFC107</color>
+    <color name="disabledColor">#BDBDBD</color>
+    <color name="rippleColor">#1A2661FA</color>
 </resources>
