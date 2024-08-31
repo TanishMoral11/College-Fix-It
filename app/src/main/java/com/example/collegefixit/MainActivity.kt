@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         askNotificationPermission()
 
 
-        // Create Notification Channel for Android 8.0 and above
+        // Create Notification Channel for Android 8 .0 and above
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(
                 getString(R.string.notification_channel_id), // Use a string resource for the channel ID

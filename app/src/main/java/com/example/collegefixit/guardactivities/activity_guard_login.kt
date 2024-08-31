@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.collegefixit.R
 
 class GuardLoginActivity : AppCompatActivity() {
+
     private lateinit var etGuardId: EditText
     private lateinit var etPassword: EditText
     private lateinit var btnLogin: Button

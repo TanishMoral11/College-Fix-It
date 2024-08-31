@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseUser
 import java.util.*
 
 class FragmentProfile : Fragment() {
+
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: FragmentProfileBinding
     private lateinit var googleSignInClient: GoogleSignInClient

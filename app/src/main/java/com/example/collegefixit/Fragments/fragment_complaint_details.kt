@@ -66,7 +66,7 @@ class ComplaintDetailsFragment : Fragment() {
             viewModel.getComplaintById(id).observe(viewLifecycleOwner) { complaint ->
                 binding.complaint = complaint
                 if (complaint != null) {
-                    complaint.imageUrl?.let{url ->
+                    complaint.imageUrl?.let { url ->
                         binding.attachedPhotoPreview.visibility = View.VISIBLE
                         Glide.with(this)
                             .load(url)
@@ -81,7 +81,6 @@ class ComplaintDetailsFragment : Fragment() {
         binding.holdButton.setOnClickListener {
             complaintId?.let { id ->
                 viewModel.updateComplaintStatus(id, "On Hold")
-//                activity?.supportFragmentManager?.popBackStack()
                 navigateToGuardMainActivity()
             }
         }
@@ -102,6 +101,7 @@ class ComplaintDetailsFragment : Fragment() {
     fun getAdapter(): ComplaintsAdapter {
         return adapter
     }
+
     private fun navigateToGuardMainActivity() {
         val intent = android.content.Intent(requireContext(), GuardMainActivity::class.java)
         intent.flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_NEW_TASK

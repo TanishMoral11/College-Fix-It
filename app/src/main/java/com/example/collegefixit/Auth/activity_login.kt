@@ -24,7 +24,6 @@ class LoginActivity : AppCompatActivity() {
     lateinit var googleSignInClient: GoogleSignInClient
     private val RC_SIGN_IN = 9001
 
-    // UI components
     private lateinit var emailInputLayout: TextInputLayout
     private lateinit var emailEditText: TextInputEditText
     private lateinit var passwordInputLayout: TextInputLayout
@@ -37,22 +36,23 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        // Initialize Firebase Auth
-        auth = FirebaseAuth.getInstance()
+        initializeFirebaseAuth()
+        configureGoogleSignIn()
+        initializeUI()
+        setupClickListeners()
+    }
 
-        // Configure Google Sign-In
+    private fun initializeFirebaseAuth() {
+        auth = FirebaseAuth.getInstance()
+    }
+
+    private fun configureGoogleSignIn() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
-
-        // Initialize UI components
-        initializeUI()
-
-        // Set up click listeners
-        setupClickListeners()
     }
 
     private fun initializeUI() {

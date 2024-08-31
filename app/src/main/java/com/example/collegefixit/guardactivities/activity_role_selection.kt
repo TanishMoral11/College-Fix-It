@@ -10,7 +10,7 @@ import com.example.collegefixit.databinding.ActivityRoleSelectionBinding
 class RoleSelectionActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRoleSelectionBinding
-    var role = ""
+    private var role = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +31,7 @@ class RoleSelectionActivity : AppCompatActivity() {
             finish()
         }
     }
+
     private fun saveRole(role: String) {
         val sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
         with(sharedPref.edit()) {

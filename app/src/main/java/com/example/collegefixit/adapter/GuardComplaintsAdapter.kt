@@ -12,7 +12,7 @@ import com.example.collegefixit.R
 import com.example.collegefixit.model.Complaint
 
 class GuardComplaintsAdapter(
-    private val onDetailsClick: (Complaint) -> Unit // Callback for handling "More Details" click
+    private val onDetailsClick: (Complaint) -> Unit
 ) : ListAdapter<Complaint, GuardComplaintsAdapter.ComplaintViewHolder>(ComplaintDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComplaintViewHolder {
@@ -29,7 +29,7 @@ class GuardComplaintsAdapter(
         private val titleTextView: TextView = itemView.findViewById(R.id.titleTextView)
         private val descriptionTextView: TextView = itemView.findViewById(R.id.descriptionTextView)
         private val upvoteCountTextView: TextView = itemView.findViewById(R.id.upvoteCount)
-        private val moreDetailsButton: View = itemView.findViewById(R.id.moreDetailsIcon) // Assuming you have a button or icon for more details
+        private val moreDetailsButton: View = itemView.findViewById(R.id.moreDetailsIcon)
         private val statusIcon: ImageView = itemView.findViewById(R.id.statusIcon)
 
         fun bind(complaint: Complaint) {
@@ -37,14 +37,12 @@ class GuardComplaintsAdapter(
             descriptionTextView.text = complaint.description
             upvoteCountTextView.text = complaint.upvotes.toString()
 
-            // Update status icon based on complaint status
             when (complaint.status) {
                 "Pending" -> statusIcon.setImageResource(R.drawable.red_dot)
                 "On Hold" -> statusIcon.setImageResource(R.drawable.pending)
                 "Solved" -> statusIcon.setImageResource(R.drawable.greentick)
             }
 
-            // Set up "More Details" button click listener
             moreDetailsButton.setOnClickListener {
                 onDetailsClick(complaint)
             }

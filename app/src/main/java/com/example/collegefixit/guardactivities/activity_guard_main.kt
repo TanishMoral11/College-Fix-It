@@ -65,7 +65,6 @@ class GuardMainActivity : AppCompatActivity() {
         binding.complaintsRecyclerView.visibility = View.GONE
     }
 
-
     private fun subscribeToGuardsTopic() {
         FirebaseMessaging.getInstance().subscribeToTopic("guards_notifications")
             .addOnCompleteListener { task ->

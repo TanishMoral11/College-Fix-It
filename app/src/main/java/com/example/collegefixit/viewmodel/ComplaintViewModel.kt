@@ -26,24 +26,20 @@ class ComplaintViewModel : ViewModel() {
         }
     }
 
-
-    private fun sortComplaints(complaints : List<Complaint>) : List<Complaint>{
+    private fun sortComplaints(complaints: List<Complaint>): List<Complaint> {
         return complaints.sortedWith(
             compareBy<Complaint> { complaints ->
-                when(complaints.status){
+                when (complaints.status) {
                     "On Hold" -> 0
                     "Pending" -> 1
                     "Solved" -> 2
                     else -> 3
                 }
-
-            }.thenByDescending { it.upvotes }
-                .thenBy{it.timestamp}
-
+            }
+                .thenByDescending { it.upvotes }
+                .thenBy { it.timestamp }
         )
     }
-
-
 
     fun getComplaintById(id: String): LiveData<Complaint?> {
         return repository.getComplaintByIdLive(id)

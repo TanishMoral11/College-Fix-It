@@ -35,7 +35,6 @@ class SignupActivity : AppCompatActivity() {
             val password = passwordEditText.text.toString().trim()
             val confirmPassword = confirmPasswordEditText.text.toString().trim()
 
-            // Check for valid college email format
             if (!email.endsWith("@iiitl.ac.in")) {
                 Toast.makeText(this, "Please use a valid college email address.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener

@@ -97,7 +97,7 @@ class AddComplaintFragment : Fragment() {
     private fun submitComplaint() {
         val title = binding.titleEditText.text.toString()
         val description = binding.descriptionEditText.text.toString()
-        val ComplaintsListFragment = ComplaintsListFragment()
+        val complaintsListFragment = ComplaintsListFragment()
 
         if (title.isBlank() || description.isBlank()) {
             showToast("Please fill in all fields")
@@ -117,7 +117,7 @@ class AddComplaintFragment : Fragment() {
         }
 
         requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, ComplaintsListFragment)
+            .replace(R.id.fragmentContainer, complaintsListFragment)
             .addToBackStack(null)
             .commit()
     }

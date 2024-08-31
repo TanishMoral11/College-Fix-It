@@ -30,6 +30,7 @@ class ComplaintsAdapter(
     }
 
     inner class ComplaintViewHolder(private val binding: ItemComplaintBinding) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(complaint: Complaint) {
             binding.complaint = complaint
 
@@ -68,12 +69,21 @@ class ComplaintsAdapter(
                     binding.deleteAnimationView.playAnimation()
 
                     binding.deleteAnimationView.addAnimatorListener(object : Animator.AnimatorListener {
-                        override fun onAnimationStart(animation: Animator) {}
+                        override fun onAnimationStart(animation: Animator) {
+                            binding.deleteIcon.visibility = View.GONE
+                        }
+
                         override fun onAnimationEnd(animation: Animator) {
                             onDeleteClick(complaint.id)
                         }
-                        override fun onAnimationCancel(animation: Animator) {}
-                        override fun onAnimationRepeat(animation: Animator) {}
+
+                        override fun onAnimationCancel(animation: Animator) {
+                            binding.deleteIcon.visibility = View.GONE
+                        }
+
+                        override fun onAnimationRepeat(animation: Animator) {
+                            binding.deleteIcon.visibility = View.GONE
+                        }
                     })
                 }
             } else {
