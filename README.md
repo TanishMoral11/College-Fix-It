@@ -1,3 +1,5 @@
+##### For contributing to this repo see [Contributers.md](https://github.com/iiitl/College-Fix-It/blob/main/Contributors.md)
+
 ![Screenshot 2024-08-26 191808](https://github.com/user-attachments/assets/1053eb36-fb41-4521-a7c1-05406c5513e1)
 
 # College Fix It🪛🪛
