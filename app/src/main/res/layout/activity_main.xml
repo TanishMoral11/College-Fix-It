@@ -10,8 +10,41 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp">
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#336dce"
+            app:menu="@menu/tool_menu"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/logo"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="App Logo" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CollegeFixIt"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:layout_marginStart="8dp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
 
         <!-- Fragment container for displaying different fragments -->
         <FrameLayout
