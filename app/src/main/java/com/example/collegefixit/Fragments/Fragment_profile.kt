@@ -106,7 +106,7 @@ class FragmentProfile : Fragment() {
         return email.substring(0, 10).uppercase(Locale.getDefault())
     }
 
-    private fun calculateCurrentYear(rollNo: String): String {
+    private fun calculateCurrentYear(rollNo: String): Int {
         val admissionYear = rollNo.substring(3, 7).toInt()
         val calendar = Calendar.getInstance()
         val currentYear = calendar.get(Calendar.YEAR)
