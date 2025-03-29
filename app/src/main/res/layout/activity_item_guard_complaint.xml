@@ -9,6 +9,7 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/complaintCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -74,16 +75,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
-            <!-- More Details Icon -->
-            <ImageView
-                android:id="@+id/moreDetailsIcon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/details"
-                android:clickable="true"
-                app:layout_constraintTop_toTopOf="@id/upvoteCount"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="@id/upvoteCount"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

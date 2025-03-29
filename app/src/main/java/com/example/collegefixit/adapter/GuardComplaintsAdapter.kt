@@ -29,8 +29,8 @@ class GuardComplaintsAdapter(
         private val titleTextView: TextView = itemView.findViewById(R.id.titleTextView)
         private val descriptionTextView: TextView = itemView.findViewById(R.id.descriptionTextView)
         private val upvoteCountTextView: TextView = itemView.findViewById(R.id.upvoteCount)
-        private val moreDetailsButton: View = itemView.findViewById(R.id.moreDetailsIcon)
         private val statusIcon: ImageView = itemView.findViewById(R.id.statusIcon)
+        private val complaintCard: View = itemView.findViewById(R.id.complaintCard)
 
         fun bind(complaint: Complaint) {
             titleTextView.text = complaint.title
@@ -43,7 +43,7 @@ class GuardComplaintsAdapter(
                 "Solved" -> statusIcon.setImageResource(R.drawable.greentick)
             }
 
-            moreDetailsButton.setOnClickListener {
+            complaintCard.setOnClickListener {
                 onDetailsClick(complaint)
             }
         }
