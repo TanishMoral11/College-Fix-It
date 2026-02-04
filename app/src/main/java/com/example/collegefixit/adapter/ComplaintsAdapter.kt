@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.collegefixit.databinding.ItemComplaintBinding
 import com.example.collegefixit.model.Complaint
+import com.example.collegefixit.utils.TimeFormatter
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -33,6 +34,10 @@ class ComplaintsAdapter(
 
         fun bind(complaint: Complaint) {
             binding.complaint = complaint
+
+            // Set formatted timestamp
+            val formattedTime = TimeFormatter.formatTimeAgo(complaint.timestamp)
+            binding.timestampTextView.text = "Posted $formattedTime"
 
             // Update UI according to status
             when (complaint.status) {
