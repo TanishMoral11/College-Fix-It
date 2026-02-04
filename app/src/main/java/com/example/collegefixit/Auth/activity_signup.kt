@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -27,8 +28,17 @@ class SignupActivity : AppCompatActivity() {
         val emailEditText: EditText = findViewById(R.id.emailEditText)
         val passwordEditText: EditText = findViewById(R.id.passwordEditText)
         val confirmPasswordEditText: EditText = findViewById(R.id.confirmPasswordEditText)
+        val termsCheckbox: CheckBox = findViewById(R.id.termsCheckbox)
+        val termsText: TextView = findViewById(R.id.termsText)
         val signupButton: Button = findViewById(R.id.signUpButton)
         val tvAlreadyHaveAccount: TextView = findViewById(R.id.tvalreadyHaveAccount)
+
+        // Handle Terms & Conditions click
+        termsText.setOnClickListener {
+            // Do NOTHING
+            // Toast.makeText(this, "Terms & Conditions", Toast.LENGTH_SHORT).show()
+            // You can open a dialog or activity with full Terms & Conditions here
+        }
 
         signupButton.setOnClickListener {
             val email = emailEditText.text.toString().trim()
@@ -42,6 +52,11 @@ class SignupActivity : AppCompatActivity() {
 
             if (password != confirmPassword) {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (!termsCheckbox.isChecked) {
+                Toast.makeText(this, "Please agree to Terms & Conditions", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
