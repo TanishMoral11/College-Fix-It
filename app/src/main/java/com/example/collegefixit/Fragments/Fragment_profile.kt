@@ -79,8 +79,8 @@ class FragmentProfile : Fragment() {
         if (photoUrl != null) {
             Glide.with(this)
                 .load(photoUrl)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .skipMemoryCache(false)
                 .placeholder(R.drawable.defaultprofile)
                 .error(R.drawable.defaultprofile)
                 .listener(object : RequestListener<Drawable> {
