@@ -17,7 +17,8 @@ import kotlinx.coroutines.launch
 
 class ComplaintsAdapter(
     private val onUpvoteClick: (String) -> Unit,
-    private val onDeleteClick: (String) -> Unit
+    private val onDeleteClick: (String) -> Unit,
+    private val onCardClick: ((String) -> Unit)? = null
 ) : ListAdapter<Complaint, ComplaintsAdapter.ComplaintViewHolder>(ComplaintDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComplaintViewHolder {
@@ -38,6 +39,11 @@ class ComplaintsAdapter(
             // Set formatted timestamp
             val formattedTime = TimeFormatter.formatTimeAgo(complaint.timestamp)
             binding.timestampTextView.text = "Posted $formattedTime"
+
+            // Set card click listener
+            binding.root.setOnClickListener {
+                onCardClick?.invoke(complaint.id)
+            }
 
             // Update UI according to status
             when (complaint.status) {

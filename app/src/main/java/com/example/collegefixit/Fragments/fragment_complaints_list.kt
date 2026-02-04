@@ -40,6 +40,15 @@ class ComplaintsListFragment : Fragment() {
             },
             onDeleteClick = { complaintId ->
                 complaintViewModel.deleteComplaint(complaintId)
+            },
+            onCardClick = { complaintId ->
+                // Navigate to complaint details
+                val fragment = ComplaintDetailsFragment.newInstance(complaintId)
+                parentFragmentManager.beginTransaction().apply {
+                    replace(R.id.fragmentContainer, fragment)
+                    addToBackStack(null)
+                    commit()
+                }
             }
         )
         binding.complaintsRecyclerView.adapter = adapter

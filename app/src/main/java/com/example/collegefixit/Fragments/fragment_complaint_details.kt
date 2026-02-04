@@ -1,5 +1,6 @@
 package com.example.collegefixit.Fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -78,17 +79,37 @@ class ComplaintDetailsFragment : Fragment() {
             }
         }
 
+        // Set up back button
+        binding.backButton.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
+        // Check user role to show/hide guard buttons
+        val sharedPref = requireContext().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val userRole = sharedPref.getString("USER_ROLE", "student") ?: "student"
+
+        // Hide guard buttons if user is a student
+        if (userRole == "student") {
+            binding.holdButton.visibility = View.GONE
+            binding.solvedButton.visibility = View.GONE
+        } else {
+            // Show buttons only for guards
+            binding.holdButton.visibility = View.VISIBLE
+            binding.solvedButton.visibility = View.VISIBLE
+        }
+
+        // Guard buttons - only show if this is being used in guard context
         binding.holdButton.setOnClickListener {
             complaintId?.let { id ->
                 viewModel.updateComplaintStatus(id, "On Hold")
-                navigateToGuardMainActivity()
+                parentFragmentManager.popBackStack()
             }
         }
 
         binding.solvedButton.setOnClickListener {
             complaintId?.let { id ->
                 viewModel.updateComplaintStatus(id, "Solved")
-                navigateToGuardMainActivity()
+                parentFragmentManager.popBackStack()
             }
         }
     }
