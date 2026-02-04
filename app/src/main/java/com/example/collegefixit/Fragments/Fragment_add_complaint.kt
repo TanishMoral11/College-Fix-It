@@ -29,6 +29,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.IOException
 import java.util.*
+import java.util.Calendar
 
 class AddComplaintFragment : Fragment() {
 
@@ -97,6 +98,7 @@ class AddComplaintFragment : Fragment() {
     private fun submitComplaint() {
         val title = binding.titleEditText.text.toString()
         val description = binding.descriptionEditText.text.toString()
+        val isAnonymous = binding.anonymousCheckbox.isChecked
         val complaintsListFragment = ComplaintsListFragment()
 
         if (title.isBlank() || description.isBlank()) {
@@ -111,9 +113,9 @@ class AddComplaintFragment : Fragment() {
 
         if (imageUri != null) {
             val imagePath = "complaints/${UUID.randomUUID()}.jpg"
-            uploadImageAndSubmitComplaint(imageUri!!, imagePath, userId, title, description)
+            uploadImageAndSubmitComplaint(imageUri!!, imagePath, userId, title, description, isAnonymous)
         } else {
-            submitComplaintWithoutImage(userId, title, description)
+            submitComplaintWithoutImage(userId, title, description, isAnonymous)
         }
 
         requireActivity().supportFragmentManager.beginTransaction()
@@ -122,15 +124,20 @@ class AddComplaintFragment : Fragment() {
             .commit()
     }
 
-    private fun uploadImageAndSubmitComplaint(uri: Uri, path: String, userId: String, title: String, description: String) {
+    private fun uploadImageAndSubmitComplaint(uri: Uri, path: String, userId: String, title: String, description: String, isAnonymous: Boolean) {
         val ref = storageRef.child(path)
         ref.putFile(uri).addOnSuccessListener {
             ref.downloadUrl.addOnSuccessListener { downloadUrl ->
+                val authorName = if (isAnonymous) "" else (FirebaseAuth.getInstance().currentUser?.displayName ?: "")
+                val userYear = extractYearFromEmail(FirebaseAuth.getInstance().currentUser?.email ?: "")
                 val complaint = Complaint(
                     title = title,
                     description = description,
                     userId = userId,
-                    imageUrl = downloadUrl.toString()
+                    imageUrl = downloadUrl.toString(),
+                    isAnonymous = isAnonymous,
+                    authorName = authorName,
+                    userYear = userYear
                 )
                 viewModel.addComplaint(complaint)
                 showToast("Complaint submitted successfully with image")
@@ -142,11 +149,16 @@ class AddComplaintFragment : Fragment() {
         }
     }
 
-    private fun submitComplaintWithoutImage(userId: String, title: String, description: String) {
+    private fun submitComplaintWithoutImage(userId: String, title: String, description: String, isAnonymous: Boolean) {
+        val authorName = if (isAnonymous) "" else (FirebaseAuth.getInstance().currentUser?.displayName ?: "")
+        val userYear = extractYearFromEmail(FirebaseAuth.getInstance().currentUser?.email ?: "")
         val complaint = Complaint(
             title = title,
             description = description,
-            userId = userId
+            userId = userId,
+            isAnonymous = isAnonymous,
+            authorName = authorName,
+            userYear = userYear
         )
         viewModel.addComplaint(complaint)
         showToast("Complaint submitted successfully")
@@ -214,12 +226,40 @@ class AddComplaintFragment : Fragment() {
         binding.titleEditText.text?.clear()
         binding.descriptionEditText.text?.clear()
         binding.locationEditText.text?.clear()
+        binding.anonymousCheckbox.isChecked = false
         binding.attachedPhotoPreview.visibility = View.GONE
         imageUri = null
     }
 
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun extractYearFromEmail(email: String): String {
+        return try {
+            val rollNo = email.substring(0, email.indexOf('@'))
+            val admissionYear = rollNo.substring(3, 7).toInt()
+            val calendar = Calendar.getInstance()
+            val currentYear = calendar.get(Calendar.YEAR)
+            val currentMonth = calendar.get(Calendar.MONTH)
+
+            val acadYear = if (currentMonth >= Calendar.AUGUST) {
+                currentYear - admissionYear + 1
+            } else {
+                currentYear - admissionYear
+            }
+
+            val suffix = when {
+                acadYear in 11..13 -> "th"
+                acadYear % 10 == 1 -> "st"
+                acadYear % 10 == 2 -> "nd"
+                acadYear % 10 == 3 -> "rd"
+                else -> "th"
+            }
+            "B.Tech ${acadYear}${suffix} year"
+        } catch (e: Exception) {
+            ""
+        }
     }
 
     private fun sendNotificationToGuards(complaint: Complaint) {

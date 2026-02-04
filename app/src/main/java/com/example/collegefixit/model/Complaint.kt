@@ -11,5 +11,8 @@ data class Complaint(
     var upvotedBy: MutableList<String> = mutableListOf(),
     val userId: String = "",
     val timestamp: Long = System.currentTimeMillis(),
-    var imageUrl: String? = null
+    var imageUrl: String? = null,
+    val isAnonymous: Boolean = false,
+    var authorName: String = "",
+    var userYear: String = ""
 )

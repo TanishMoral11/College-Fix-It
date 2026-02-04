@@ -94,6 +94,32 @@
                     android:textColor="@color/Black"/>
             </com.google.android.material.textfield.TextInputLayout>
 
+            <LinearLayout
+                android:id="@+id/anonymousLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/locationInputLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:gravity="center_vertical">
+
+                <CheckBox
+                    android:id="@+id/anonymousCheckbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Report Anonymously"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/attachPhotoButton"
                 android:layout_width="wrap_content"
@@ -102,7 +128,7 @@
                 android:textAllCaps="false"
                 android:layout_marginTop="24dp"
                 app:icon="@drawable/attach_photo"
-                app:layout_constraintTop_toBottomOf="@id/locationInputLayout"
+                app:layout_constraintTop_toBottomOf="@id/anonymousLayout"
                 app:layout_constraintStart_toStartOf="parent"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:textColor="@color/colorPrimary"
