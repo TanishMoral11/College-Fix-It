@@ -13,6 +13,7 @@ import com.example.collegefixit.ComplaintsAdapter
 import com.example.collegefixit.databinding.FragmentComplaintDetailsBinding
 import com.example.collegefixit.guardactivities.GuardMainActivity
 import com.example.collegefixit.viewmodel.ComplaintViewModel
+import com.example.collegefixit.utils.YearCalculator
 
 class ComplaintDetailsFragment : Fragment() {
 
@@ -74,7 +75,7 @@ class ComplaintDetailsFragment : Fragment() {
                         val year = if (complaint.userYear.isNotEmpty()) {
                             complaint.userYear
                         } else {
-                            extractYearFromUserId(complaint.userId)
+                            YearCalculator.extractYearFromUserId(complaint.userId)
                         }
                         
                         if (year.isNotEmpty()) {
@@ -138,38 +139,6 @@ class ComplaintDetailsFragment : Fragment() {
 
     fun getAdapter(): ComplaintsAdapter {
         return adapter
-    }
-
-    private fun extractYearFromUserId(userId: String): String {
-        return try {
-            // If userYear is not stored, try to extract from userId if it contains roll number
-            if (userId.contains("@")) {
-                val rollNo = userId.substring(0, userId.indexOf('@'))
-                val admissionYear = rollNo.substring(3, 7).toInt()
-                val calendar = java.util.Calendar.getInstance()
-                val currentYear = calendar.get(java.util.Calendar.YEAR)
-                val currentMonth = calendar.get(java.util.Calendar.MONTH)
-
-                val acadYear = if (currentMonth >= java.util.Calendar.AUGUST) {
-                    currentYear - admissionYear + 1
-                } else {
-                    currentYear - admissionYear
-                }
-
-                val suffix = when {
-                    acadYear in 11..13 -> "th"
-                    acadYear % 10 == 1 -> "st"
-                    acadYear % 10 == 2 -> "nd"
-                    acadYear % 10 == 3 -> "rd"
-                    else -> "th"
-                }
-                "B.Tech ${acadYear}${suffix} year"
-            } else {
-                ""
-            }
-        } catch (e: Exception) {
-            ""
-        }
     }
 
     private fun navigateToGuardMainActivity() {

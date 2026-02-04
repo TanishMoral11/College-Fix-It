@@ -17,6 +17,7 @@ import com.bumptech.glide.request.target.Target
 import com.example.collegefixit.Auth.LoginActivity
 import com.example.collegefixit.R
 import com.example.collegefixit.databinding.FragmentProfileBinding
+import com.example.collegefixit.utils.YearCalculator
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -60,9 +61,9 @@ class FragmentProfile : Fragment() {
         val email = user.email
         email?.let { mail ->
             val rollNo = extractRollNumber(mail)
-            val currentYear = calculateCurrentYear(rollNo)
+            val currentYear = YearCalculator.extractYearFromUserId(rollNo)
             binding.RollNo.text = rollNo
-            binding.year.text = "$currentYear Year"
+            binding.year.text = currentYear.replace("B.Tech ", "").replace(" year", "").capitalize() + " Year"
             binding.batchTextView.text = calculateBatch(rollNo)
             binding.nameTextView.text = user.displayName ?: "User"
 
@@ -104,33 +105,6 @@ class FragmentProfile : Fragment() {
     private fun extractRollNumber(email: String): String {
         // Assuming the roll number is always the first 10 characters of the email
         return email.substring(0, 10).uppercase(Locale.getDefault())
-    }
-
-   private fun calculateCurrentYear(rollNo: String): String {
-        val admissionYear = rollNo.substring(3, 7).toInt()
-        val calendar = Calendar.getInstance()
-        val currentYear = calendar.get(Calendar.YEAR)
-        val currentMonth = calendar.get(Calendar.MONTH)
-
-        val acadYear = if (currentMonth >= Calendar.AUGUST) {
-            currentYear - admissionYear + 1
-        } else {
-            currentYear - admissionYear
-        }
-
-        return acadYear.toString() + getSuffix(acadYear)
-    }
-
-    private fun getSuffix(year: Int): String {
-        if (year in 11..13) {
-            return "th"
-        }
-        return when (year % 10) {
-            1 -> "st"
-            2 -> "nd"
-            3 -> "rd"
-            else -> "th"
-        }
     }
 
     private fun calculateBatch(rollNo: String): String {
